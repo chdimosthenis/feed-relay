@@ -1,0 +1,25 @@
+name: relay
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch: {}
+
+concurrency:
+  group: relay
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  relay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - name: Relay publisher payloads to the fetcher
+        env:
+          FETCHER_URL: ${{ secrets.FETCHER_URL }}
+          FETCHER_SECRET: ${{ secrets.FETCHER_SECRET }}
+        run: node relay.mjs
