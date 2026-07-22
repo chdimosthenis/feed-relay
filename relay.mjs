@@ -89,20 +89,45 @@ async function fetchPayload(t) {
   return payload;
 }
 
+/** Google News query for a publisher's own domain — the fallback surface
+ * when the publisher blocks this egress too. Google crawls publishers from
+ * its own infrastructure, so a 403 against us says nothing about what Google
+ * has indexed. The payload is always RSS, which is why the fetcher accepts
+ * an `rss` document for a source whose primary surface is a sitemap. */
+function aggregatorUrl(referer) {
+  const host = new URL(referer).hostname.replace(/^www\./, "");
+  const q = encodeURIComponent(`site:${host}`);
+  return `https://news.google.com/rss/search?q=${q}&hl=el&gl=GR&ceid=GR:el`;
+}
+
 async function relayOne(t) {
-  const payload = await fetchPayload(t);
+  let kind = t.kind;
+  let payload;
+  try {
+    payload = await fetchPayload(t);
+  } catch (e) {
+    // Only a document-shaped source has a meaningful fallback; a wp-json or
+    // homepage-scrape mapper cannot read an aggregator feed.
+    if (t.kind !== "rss" && t.kind !== "sitemap") throw e;
+    payload = await fetchPayload({
+      ...t,
+      kind: "rss",
+      url: aggregatorUrl(t.referer),
+    });
+    kind = "rss";
+  }
   const post = await fetch(`${FETCHER_URL}/ingest-external`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${FETCHER_SECRET}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ source: t.source, kind: t.kind, payload }),
+    body: JSON.stringify({ source: t.source, kind, payload }),
     signal: AbortSignal.timeout(30_000),
   });
   const bodyText = (await post.text()).trim();
   if (!post.ok) throw new Error(`fetcher HTTP ${post.status}: ${bodyText}`);
-  return payload.length;
+  return { bytes: payload.length, kind, viaFallback: kind !== t.kind };
 }
 
 if (!FETCHER_URL || !FETCHER_SECRET) {
@@ -119,9 +144,11 @@ async function worker() {
     const t = queue.shift();
     if (!t) return;
     try {
-      const bytes = await relayOne(t);
+      const r = await relayOne(t);
       ok++;
-      console.log(`✓ ${t.source} (${t.kind}): relayed ${bytes} bytes`);
+      console.log(
+        `✓ ${t.source} (${r.kind}${r.viaFallback ? ", fallback" : ""}): relayed ${r.bytes} bytes`,
+      );
     } catch (e) {
       failures++;
       console.error(`✗ ${t.source} (${t.kind}): ${e.message}`);
