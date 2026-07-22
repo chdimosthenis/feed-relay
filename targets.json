@@ -1,5 +1,47 @@
 [
   {
+    "source": "Βουλή Αντιπροσώπων",
+    "kind": "rss",
+    "url": "https://www.parliament.cy/feed",
+    "referer": "https://www.parliament.cy"
+  },
+  {
+    "source": "Βουλή των Ελλήνων",
+    "kind": "rss",
+    "url": "https://www.hellenicparliament.gr/rssfeed/RssNews.aspx?catid=573EB3FF-7DC6-44C9-9969-58284F0951E3",
+    "referer": "https://www.hellenicparliament.gr"
+  },
+  {
+    "source": "ΓΕΕΘΑ",
+    "kind": "rss",
+    "url": "https://geetha.mil.gr/feed/",
+    "referer": "https://geetha.mil.gr"
+  },
+  {
+    "source": "Πολιτική Προστασία",
+    "kind": "rss",
+    "url": "https://civilprotection.gov.gr/rss.xml",
+    "referer": "https://civilprotection.gov.gr"
+  },
+  {
+    "source": "Πρωθυπουργός",
+    "kind": "rss",
+    "url": "https://www.primeminister.gr/feed",
+    "referer": "https://www.primeminister.gr"
+  },
+  {
+    "source": "Υπ. Εσωτερικών",
+    "kind": "rss",
+    "url": "https://www.ypes.gr/feed/",
+    "referer": "https://www.ypes.gr"
+  },
+  {
+    "source": "Υπ. Περιβάλλοντος & Ενέργειας",
+    "kind": "rss",
+    "url": "https://ypen.gov.gr/feed/",
+    "referer": "https://ypen.gov.gr"
+  },
+  {
     "source": "Agrotypos",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Aagrotypos.gr&hl=el&gl=GR&ceid=GR:el",
