@@ -373,9 +373,9 @@
   },
   {
     "source": "Sportime",
-    "kind": "wpjson",
-    "url": "https://www.sportime.gr/wp-json/wp/v2/posts?per_page=20&_embed=wp:featuredmedia&_fields=id,date,date_gmt,title,link,excerpt,content,_embedded",
-    "referer": "https://www.sportime.gr"
+    "kind": "rss",
+    "url": "https://sportime.gr/feed/",
+    "referer": "https://sportime.gr"
   },
   {
     "source": "Stockwatch",
