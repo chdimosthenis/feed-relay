@@ -15,7 +15,7 @@ permissions:
 jobs:
   relay:
     runs-on: ubuntu-latest
-    timeout-minutes: 6
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
       - name: Relay publisher payloads to the fetcher
