@@ -1,28 +1,21 @@
-# tokastoraki-relay
+# feed-relay
 
-Scheduled GitHub Action (every 30 minutes + manual dispatch) that fetches the
-public surfaces of the publishers whose WAFs block Cloudflare's IP ranges but
-answer generic datacenter egress — Contra + News247 (wp-json) and Sport24
-(homepage HTML) — and relays the raw payloads to the tokastoraki fetcher's
-`POST /ingest-external` endpoint, where the existing mappers parse and insert
-them. Companion of `chdimosthenis/tokastoraki` (PR #17) and the egress-probe
-findings in `chdimosthenis/tokastoraki-egress-probe`.
+Scheduled GitHub Action that fetches a list of public RSS, sitemap and
+WordPress endpoints and forwards the raw payloads to a configured HTTP
+endpoint. Runs every 30 minutes, and on manual dispatch.
 
-Secrets: `FETCHER_URL`, `FETCHER_SECRET` (repo Actions secrets). Budget:
-~48 runs/day × ~1 min ≈ 1,440 minutes/month, inside the free 2,000.
+Configuration is two repository Actions secrets, `FETCHER_URL` and
+`FETCHER_SECRET`. Nothing else is required and nothing is stored here.
 
-## The target list is generated, not hand-written
+## targets.json is generated
 
-`targets.json` is produced by `scripts/build-relay-targets.ts` in the app
-repository, from the `relayed` flag on each entry of `config/feeds.ts`. The
-fetcher's `/ingest-external` allowlist is built from the same flag, so both
-halves of the contract move together: a source has to be marked relayed in
-the app repo, deployed there, and regenerated here. Editing `targets.json`
-by hand produces payloads the fetcher answers with 403.
+The target list is produced by a script in the consuming application, not
+edited here. The receiving endpoint keeps its own allowlist built from the
+same source, so a hand-edited entry is simply rejected on arrival.
 
-Two reasons a source is relayed. Some publishers 403 Cloudflare's egress
-ranges specifically while answering generic datacenter egress normally, so
-the fetch has to happen from somewhere else. The rest are aggregator
-queries: Google News rate-limits Cloudflare's shared egress once the whole
-roster crosses roughly 110 requests an hour, and moving those queries here
-takes them off that ceiling entirely.
+## Why fetch from here at all
+
+Some publishers refuse one hosting provider's IP ranges while answering an
+ordinary datacenter egress normally, so the request has to originate
+somewhere else. Separately, aggregator queries are rate-limited per egress,
+and moving them here takes them off a shared ceiling.
