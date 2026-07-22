@@ -18,6 +18,12 @@
     "referer": "https://geetha.mil.gr"
   },
   {
+    "source": "ΕΛΣΤΑΤ",
+    "kind": "rss",
+    "url": "https://www.statistics.gr/publications/api/rssfeed?locale=el&results=8",
+    "referer": "https://www.statistics.gr"
+  },
+  {
     "source": "Πολιτική Προστασία",
     "kind": "rss",
     "url": "https://civilprotection.gov.gr/rss.xml",
@@ -184,6 +190,12 @@
     "kind": "rss",
     "url": "https://www.geopolitics-news.gr/feed",
     "referer": "https://www.geopolitics-news.gr"
+  },
+  {
+    "source": "gov.cy",
+    "kind": "wpjson",
+    "url": "https://www.gov.cy/wp-json/wp/v2/posts?per_page=20&_embed=wp:featuredmedia&_fields=id,date,date_gmt,title,link,excerpt,content,_embedded",
+    "referer": "https://www.gov.cy"
   },
   {
     "source": "Govastileto",
