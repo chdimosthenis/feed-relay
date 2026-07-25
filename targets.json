@@ -174,12 +174,6 @@
     "referer": "https://www.enikos.gr"
   },
   {
-    "source": "Flix",
-    "kind": "rss",
-    "url": "https://flix.gr/novafeed.rss",
-    "referer": "https://flix.gr"
-  },
-  {
     "source": "Gavros",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Agavros.gr&hl=el&gl=GR&ceid=GR:el",
