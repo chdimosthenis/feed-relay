@@ -252,6 +252,12 @@
     "referer": "https://insomnia.gr"
   },
   {
+    "source": "InStyle",
+    "kind": "rss",
+    "url": "https://www.instyle.gr/feed/",
+    "referer": "https://www.instyle.gr"
+  },
+  {
     "source": "iPaidia",
     "kind": "sitemap",
     "url": "https://www.ipaidia.gr/sitemap_news.xml",
@@ -376,6 +382,12 @@
     "kind": "rss",
     "url": "https://popaganda.gr/feed/",
     "referer": "https://popaganda.gr"
+  },
+  {
+    "source": "Pressaris",
+    "kind": "rss",
+    "url": "https://www.pressaris.gr/feed/",
+    "referer": "https://pressaris.gr"
   },
   {
     "source": "Proinos Logos",
