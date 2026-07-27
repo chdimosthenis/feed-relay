@@ -210,6 +210,12 @@
     "referer": "https://www.healthstat.gr"
   },
   {
+    "source": "HuffPost Greece",
+    "kind": "rss",
+    "url": "https://www.huffingtonpost.gr/feed/",
+    "referer": "https://www.huffingtonpost.gr"
+  },
+  {
     "source": "iatronet",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Aiatronet.gr&hl=el&gl=GR&ceid=GR:el",
@@ -364,6 +370,12 @@
     "kind": "rss",
     "url": "https://www.ot.gr/feed/",
     "referer": "https://www.ot.gr"
+  },
+  {
+    "source": "Paideia News",
+    "kind": "rss",
+    "url": "https://paideia-news.com/rss.xml",
+    "referer": "https://paideia-news.com"
   },
   {
     "source": "Pelop",
