@@ -66,12 +66,6 @@
     "referer": "https://www.businessnews.gr"
   },
   {
-    "source": "Chaniotika Nea",
-    "kind": "wpjson",
-    "url": "https://www.haniotika-nea.gr/wp-json/wp/v2/posts?per_page=20&_embed=wp:featuredmedia&_fields=id,date,date_gmt,title,link,excerpt,content,_embedded",
-    "referer": "https://www.haniotika-nea.gr"
-  },
-  {
     "source": "Contra",
     "kind": "wpjson",
     "url": "https://www.contra.gr/wp-json/wp/v2/posts?per_page=20&_embed=wp:featuredmedia&_fields=id,date,date_gmt,title,link,excerpt,content,_embedded",
