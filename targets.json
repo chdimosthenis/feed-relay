@@ -1,51 +1,15 @@
 [
   {
-    "source": "Βουλή Αντιπροσώπων",
+    "source": "ANT1 News",
     "kind": "rss",
-    "url": "https://www.parliament.cy/feed",
-    "referer": "https://www.parliament.cy"
+    "url": "https://news.google.com/rss/search?q=site%3Aant1news.gr&hl=el&gl=GR&ceid=GR:el",
+    "referer": "https://www.ant1news.gr"
   },
   {
-    "source": "Βουλή των Ελλήνων",
+    "source": "APE-MPE",
     "kind": "rss",
-    "url": "https://www.hellenicparliament.gr/rssfeed/RssNews.aspx?catid=573EB3FF-7DC6-44C9-9969-58284F0951E3",
-    "referer": "https://www.hellenicparliament.gr"
-  },
-  {
-    "source": "ΓΕΕΘΑ",
-    "kind": "rss",
-    "url": "https://geetha.mil.gr/feed/",
-    "referer": "https://geetha.mil.gr"
-  },
-  {
-    "source": "ΕΛΣΤΑΤ",
-    "kind": "rss",
-    "url": "https://www.statistics.gr/publications/api/rssfeed?locale=el&results=8",
-    "referer": "https://www.statistics.gr"
-  },
-  {
-    "source": "Πολιτική Προστασία",
-    "kind": "rss",
-    "url": "https://civilprotection.gov.gr/rss.xml",
-    "referer": "https://civilprotection.gov.gr"
-  },
-  {
-    "source": "Πρωθυπουργός",
-    "kind": "rss",
-    "url": "https://www.primeminister.gr/feed",
-    "referer": "https://www.primeminister.gr"
-  },
-  {
-    "source": "Υπ. Εσωτερικών",
-    "kind": "rss",
-    "url": "https://www.ypes.gr/feed/",
-    "referer": "https://www.ypes.gr"
-  },
-  {
-    "source": "Υπ. Περιβάλλοντος & Ενέργειας",
-    "kind": "rss",
-    "url": "https://ypen.gov.gr/feed/",
-    "referer": "https://ypen.gov.gr"
+    "url": "https://news.google.com/rss/search?q=site%3Aamna.gr&hl=el&gl=GR&ceid=GR:el",
+    "referer": "https://www.amna.gr"
   },
   {
     "source": "AgrinioPress",
@@ -64,18 +28,6 @@
     "kind": "rss",
     "url": "https://www.alphanews.live/feed/",
     "referer": "https://www.alphanews.live"
-  },
-  {
-    "source": "ANT1 News",
-    "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Aant1news.gr&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://www.ant1news.gr"
-  },
-  {
-    "source": "APE-MPE",
-    "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Aamna.gr&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://www.amna.gr"
   },
   {
     "source": "Astinomiko",
@@ -114,6 +66,12 @@
     "referer": "https://www.businessnews.gr"
   },
   {
+    "source": "Chaniotika Nea",
+    "kind": "wpjson",
+    "url": "https://www.haniotika-nea.gr/wp-json/wp/v2/posts?per_page=20&_embed=wp:featuredmedia&_fields=id,date,date_gmt,title,link,excerpt,content,_embedded",
+    "referer": "https://www.haniotika-nea.gr"
+  },
+  {
     "source": "Contra",
     "kind": "wpjson",
     "url": "https://www.contra.gr/wp-json/wp/v2/posts?per_page=20&_embed=wp:featuredmedia&_fields=id,date,date_gmt,title,link,excerpt,content,_embedded",
@@ -138,34 +96,16 @@
     "referer": "https://www.dikastikoreportaz.gr"
   },
   {
-    "source": "e-Thessalia",
-    "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Ae-thessalia.gr&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://www.e-thessalia.gr"
-  },
-  {
     "source": "Economy Today",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Aeconomytoday.sigmalive.com&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://economytoday.sigmalive.com"
   },
   {
-    "source": "ecopress",
-    "kind": "rss",
-    "url": "https://ecopress.gr/feed/",
-    "referer": "https://ecopress.gr"
-  },
-  {
     "source": "Efsyn",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Aefsyn.gr&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://www.efsyn.gr"
-  },
-  {
-    "source": "elCulture",
-    "kind": "rss",
-    "url": "https://www.elculture.gr/feed/",
-    "referer": "https://www.elculture.gr"
   },
   {
     "source": "Eleftheros Typos",
@@ -204,34 +144,16 @@
     "referer": "https://www.geopolitics-news.gr"
   },
   {
-    "source": "gov.cy",
-    "kind": "wpjson",
-    "url": "https://www.gov.cy/wp-json/wp/v2/posts?per_page=20&_embed=wp:featuredmedia&_fields=id,date,date_gmt,title,link,excerpt,content,_embedded",
-    "referer": "https://www.gov.cy"
-  },
-  {
     "source": "Govastileto",
     "kind": "rss",
     "url": "https://www.govastileto.gr/feed/",
     "referer": "https://www.govastileto.gr"
   },
   {
-    "source": "healthstat",
-    "kind": "sitemap",
-    "url": "https://www.healthstat.gr/sitemap_news.xml",
-    "referer": "https://www.healthstat.gr"
-  },
-  {
     "source": "HuffPost Greece",
     "kind": "rss",
     "url": "https://www.huffingtonpost.gr/feed/",
     "referer": "https://www.huffingtonpost.gr"
-  },
-  {
-    "source": "iatronet",
-    "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Aiatronet.gr&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://www.iatronet.gr"
   },
   {
     "source": "Ilia Live",
@@ -252,6 +174,12 @@
     "referer": "https://www.in.gr"
   },
   {
+    "source": "InStyle",
+    "kind": "rss",
+    "url": "https://www.instyle.gr/feed/",
+    "referer": "https://www.instyle.gr"
+  },
+  {
     "source": "InfoKids",
     "kind": "sitemap",
     "url": "https://www.infokids.gr/news-sitemap.xml",
@@ -268,18 +196,6 @@
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Ainsomnia.gr&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://insomnia.gr"
-  },
-  {
-    "source": "InStyle",
-    "kind": "rss",
-    "url": "https://www.instyle.gr/feed/",
-    "referer": "https://www.instyle.gr"
-  },
-  {
-    "source": "iPaidia",
-    "kind": "sitemap",
-    "url": "https://www.ipaidia.gr/sitemap_news.xml",
-    "referer": "https://www.ipaidia.gr"
   },
   {
     "source": "Karfitsa",
@@ -366,6 +282,12 @@
     "referer": "https://www.newsbeast.gr"
   },
   {
+    "source": "OT.gr",
+    "kind": "rss",
+    "url": "https://www.ot.gr/feed/",
+    "referer": "https://www.ot.gr"
+  },
+  {
     "source": "Offsite",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Aoffsite.com.cy&hl=el&gl=GR&ceid=GR:el",
@@ -376,12 +298,6 @@
     "kind": "rss",
     "url": "https://www.omegalive.com.cy/rss",
     "referer": "https://www.omegalive.com.cy"
-  },
-  {
-    "source": "OT.gr",
-    "kind": "rss",
-    "url": "https://www.ot.gr/feed/",
-    "referer": "https://www.ot.gr"
   },
   {
     "source": "Paideia News",
@@ -474,6 +390,12 @@
     "referer": "https://www.stockwatch.com.cy"
   },
   {
+    "source": "TV Open",
+    "kind": "rss",
+    "url": "https://www.tvopen.gr/rss",
+    "referer": "https://www.tvopen.gr"
+  },
+  {
     "source": "Taxheaven",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Ataxheaven.gr&hl=el&gl=GR&ceid=GR:el",
@@ -502,12 +424,6 @@
     "kind": "rss",
     "url": "https://www.tovima.gr/feed/",
     "referer": "https://www.tovima.gr"
-  },
-  {
-    "source": "TV Open",
-    "kind": "rss",
-    "url": "https://www.tvopen.gr/rss",
-    "referer": "https://www.tvopen.gr"
   },
   {
     "source": "Voicenews",
@@ -544,5 +460,95 @@
     "kind": "rss",
     "url": "https://www.zougla.gr/feed/",
     "referer": "https://www.zougla.gr"
+  },
+  {
+    "source": "e-Thessalia",
+    "kind": "rss",
+    "url": "https://news.google.com/rss/search?q=site%3Ae-thessalia.gr&hl=el&gl=GR&ceid=GR:el",
+    "referer": "https://www.e-thessalia.gr"
+  },
+  {
+    "source": "ecopress",
+    "kind": "rss",
+    "url": "https://ecopress.gr/feed/",
+    "referer": "https://ecopress.gr"
+  },
+  {
+    "source": "elCulture",
+    "kind": "rss",
+    "url": "https://www.elculture.gr/feed/",
+    "referer": "https://www.elculture.gr"
+  },
+  {
+    "source": "gov.cy",
+    "kind": "wpjson",
+    "url": "https://www.gov.cy/wp-json/wp/v2/posts?per_page=20&_embed=wp:featuredmedia&_fields=id,date,date_gmt,title,link,excerpt,content,_embedded",
+    "referer": "https://www.gov.cy"
+  },
+  {
+    "source": "healthstat",
+    "kind": "sitemap",
+    "url": "https://www.healthstat.gr/sitemap_news.xml",
+    "referer": "https://www.healthstat.gr"
+  },
+  {
+    "source": "iPaidia",
+    "kind": "sitemap",
+    "url": "https://www.ipaidia.gr/sitemap_news.xml",
+    "referer": "https://www.ipaidia.gr"
+  },
+  {
+    "source": "iatronet",
+    "kind": "rss",
+    "url": "https://news.google.com/rss/search?q=site%3Aiatronet.gr&hl=el&gl=GR&ceid=GR:el",
+    "referer": "https://www.iatronet.gr"
+  },
+  {
+    "source": "Βουλή Αντιπροσώπων",
+    "kind": "rss",
+    "url": "https://www.parliament.cy/feed",
+    "referer": "https://www.parliament.cy"
+  },
+  {
+    "source": "Βουλή των Ελλήνων",
+    "kind": "rss",
+    "url": "https://www.hellenicparliament.gr/rssfeed/RssNews.aspx?catid=573EB3FF-7DC6-44C9-9969-58284F0951E3",
+    "referer": "https://www.hellenicparliament.gr"
+  },
+  {
+    "source": "ΓΕΕΘΑ",
+    "kind": "rss",
+    "url": "https://geetha.mil.gr/feed/",
+    "referer": "https://geetha.mil.gr"
+  },
+  {
+    "source": "ΕΛΣΤΑΤ",
+    "kind": "rss",
+    "url": "https://www.statistics.gr/publications/api/rssfeed?locale=el&results=8",
+    "referer": "https://www.statistics.gr"
+  },
+  {
+    "source": "Πολιτική Προστασία",
+    "kind": "rss",
+    "url": "https://civilprotection.gov.gr/rss.xml",
+    "referer": "https://civilprotection.gov.gr"
+  },
+  {
+    "source": "Πρωθυπουργός",
+    "kind": "rss",
+    "url": "https://www.primeminister.gr/feed",
+    "referer": "https://www.primeminister.gr"
+  },
+  {
+    "source": "Υπ. Εσωτερικών",
+    "kind": "rss",
+    "url": "https://www.ypes.gr/feed/",
+    "referer": "https://www.ypes.gr"
+  },
+  {
+    "source": "Υπ. Περιβάλλοντος & Ενέργειας",
+    "kind": "rss",
+    "url": "https://ypen.gov.gr/feed/",
+    "referer": "https://ypen.gov.gr"
   }
 ]
