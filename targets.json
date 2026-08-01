@@ -48,6 +48,12 @@
     "referer": "https://ypen.gov.gr"
   },
   {
+    "source": "AgrinioPress",
+    "kind": "rss",
+    "url": "https://www.agriniopress.gr/feed/",
+    "referer": "https://www.agriniopress.gr"
+  },
+  {
     "source": "Agrotypos",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Aagrotypos.gr&hl=el&gl=GR&ceid=GR:el",
@@ -118,6 +124,12 @@
     "kind": "rss",
     "url": "https://cyprustimes.com/feed/",
     "referer": "https://cyprustimes.com"
+  },
+  {
+    "source": "Defence Point",
+    "kind": "rss",
+    "url": "https://www.defence-point.gr/feed",
+    "referer": "https://www.defence-point.gr"
   },
   {
     "source": "Dikastiko Reportaz",
