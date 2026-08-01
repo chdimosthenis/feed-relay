@@ -1,0 +1,51 @@
+name: Uptime
+
+# External uptime monitor for tokastoraki.gr. Probes both Workers from GitHub's
+# infrastructure — i.e. from OUTSIDE Cloudflare, which is the point: a check
+# that runs inside the thing it is checking proves nothing. A failed run makes
+# GitHub email the repo owner automatically; no third-party account needed.
+#
+# THIS FILE LIVES HERE, NOT IN THE APP REPO, AND THAT IS THE WHOLE TRICK.
+# `chdimosthenis/tokastoraki` is PRIVATE, and GitHub bills private-repo Actions
+# by the minute, ROUNDING EVERY RUN UP to a whole minute. At the original
+# half-hourly cadence that was ~1,440 minutes a month against a 2,000-minute
+# allowance — three quarters of the budget, for a curl. On 2026-07-22 that
+# allowance hit 100% with ten days of the cycle left and froze every scheduled
+# workflow in every private repo.
+#
+# This repository is PUBLIC, where Actions are free and uncounted. The probe
+# needs no secrets and no source code, so there was never anything holding it
+# in the private repo. Moved 2026-08-01: ~360 min/month -> 0.
+#
+# ⚠ Do not make this repository private. Both this monitor and the feed relay
+# become billable the moment it is, and the relay is the larger of the two.
+#
+# Back to half-hourly now that it costs nothing.
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Site worker answers (Basic Auth gate means 401 is healthy)
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 https://tokastoraki.gr/ || echo 000)
+          echo "tokastoraki.gr -> HTTP $code"
+          case "$code" in 200|401) exit 0 ;; *) exit 1 ;; esac
+
+      - name: Fetcher worker answers
+        if: always()
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 https://tokastoraki-fetcher.dimos-chatzinikolaou.workers.dev/ || echo 000)
+          echo "fetcher -> HTTP $code"
+          case "$code" in 200|401|405) exit 0 ;; *) exit 1 ;; esac
+
+      - name: Backfill worker answers
+        if: always()
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 https://tokastoraki-backfill.dimos-chatzinikolaou.workers.dev/status || echo 000)
+          echo "backfill -> HTTP $code"
+          case "$code" in 200) exit 0 ;; *) exit 1 ;; esac
