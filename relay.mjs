@@ -68,7 +68,18 @@ async function fetchPayload(t) {
   });
   // A single 503 from an aggregator is usually a momentary rate-limit
   // rather than a wall; one cheap retry recovers most of them.
-  if (res.status === 503) {
+  //
+  // THE GUARD THIS COMMENT ALWAYS IMPLIED WAS NEVER WRITTEN. `_retried` was
+  // set here and read nowhere, so a publisher that answers 503 EVERY time
+  // recursed for ever: fetch, sleep 3s, fetch, sleep 3s. With CONCURRENCY 6
+  // one such target holds a worker permanently, `Promise.all` never settles,
+  // and the job runs to its 12-minute timeout — so ONE misbehaving publisher
+  // silently stopped all 92 from relaying, not just itself.
+  //
+  // Measured 2026-08-01: every run for weeks took 0.4-0.6 min; the two runs
+  // after a permanently-503ing origin was added took 12.3 min and were
+  // cancelled. The origin was the trigger, this was the fault.
+  if (res.status === 503 && !t._retried) {
     await new Promise((r) => setTimeout(r, 3000));
     return fetchPayload({ ...t, _retried: true });
   }
