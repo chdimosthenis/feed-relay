@@ -20,7 +20,7 @@ name: wp-history
 # gives, POST the bytes to /relay/page.
 on:
   schedule:
-    - cron: "*/60 * * * *"
+    - cron: "15 * * * *"
   workflow_dispatch: {}
 
 concurrency:
