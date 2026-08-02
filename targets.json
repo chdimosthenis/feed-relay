@@ -30,12 +30,6 @@
     "referer": "https://www.alphanews.live"
   },
   {
-    "source": "Antenna",
-    "kind": "rss",
-    "url": "https://antenna.gr/rss.xml",
-    "referer": "https://antenna.gr"
-  },
-  {
     "source": "Astinomiko",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Aastinomiko.gr&hl=el&gl=GR&ceid=GR:el",
