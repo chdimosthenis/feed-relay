@@ -8,11 +8,27 @@ name: wp-history
 # that deliberately runs to a time budget and resumes next time. Sharing a
 # workflow would mean one starving the other, and sharing a concurrency group
 # would mean the news waiting behind the history.
+# ⚠ AS OF 2026-08-02 THIS HAS ZERO WORKING CUSTOMERS, AND THAT IS WORTH SAYING
+# OUT LOUD RATHER THAN LEAVING SOMEBODY TO DISCOVER IT.
+#
+# It was built for the seven archives the tokastoraki Worker cannot reach. The
+# first run proved they refuse these runners too — Cloudflare's "Just a moment"
+# challenge on defence-point.gr and agriniopress.gr, Akamai "Access Denied" on
+# geetha.mil.gr, plain 403s on the rest. The decisive detail is that the SAME
+# runners fetch those same sites' /feed/ successfully every thirty minutes, so
+# it is the /wp-json/ PATH they block, not our location: a common WordPress
+# hardening, and nothing a different egress can talk its way past. Those
+# archives stay on the Internet Archive lane, which reads web.archive.org
+# rather than the publisher, and therefore still works.
+#
+# So this runs DAILY, not hourly: there is currently nothing for it to do, and
+# an hourly job that fails 7 out of 7 for ever is noise pretending to be a
+# safeguard. Daily is enough to notice a publisher lifting a block, on archives
+# that have already waited years. If one ever does, this starts working with no
+# further change — which is the whole reason it stays.
 on:
   schedule:
-    # Hourly. The archives are finite and shrinking, so there is no reason to
-    # push harder at publishers who are, after all, doing us a favour.
-    - cron: "25 * * * *"
+    - cron: "25 4 * * *"
   workflow_dispatch: {}
 
 concurrency:
