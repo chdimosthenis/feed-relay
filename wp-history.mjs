@@ -68,10 +68,11 @@ async function readPage(url) {
   // 400 is WordPress saying there is no such page: the archive floor, which
   // the Worker recognises from an empty array.
   if (res.status === 400) return "[]";
+  const buf = Buffer.from(await res.arrayBuffer());
   if (!res.ok) {
     const ray = res.headers.get("cf-ray") ?? "";
     const server = res.headers.get("server") ?? "";
-    const body = (await res.text().catch(() => "")).replace(/\s+/g, " ").slice(0, 120);
+    const body = buf.toString("utf8").replace(/\s+/g, " ").slice(0, 120);
     throw new Error(
       `publisher HTTP ${res.status}` +
         (server ? ` server=${server}` : "") +
@@ -79,7 +80,15 @@ async function readPage(url) {
         (body ? ` body=${body}` : ""),
     );
   }
-  return res.text();
+  // Honour a byte-order mark. antenna.gr serves its feed as UTF-16LE under
+  // `Content-Type: text/xml` with no charset, and reading that as UTF-8 finds
+  // no <item> at all — 134,584 bytes delivered, a 200 recorded, zero rows
+  // written, discovered the hard way on 2026-08-02. None of today's
+  // relay-only archives are UTF-16, but the next one might be, and this is
+  // the same check the Worker itself makes on the pages it fetches directly.
+  const utf16 =
+    (buf[0] === 0xff && buf[1] === 0xfe) || (buf[0] === 0xfe && buf[1] === 0xff);
+  return buf.toString(utf16 ? "utf16le" : "utf8");
 }
 
 const { domains } = await walkApi("/relay/domains");
