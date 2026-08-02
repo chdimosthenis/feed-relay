@@ -1,0 +1,36 @@
+name: wp-history
+
+# Walk the archives of publishers that refuse Cloudflare, from ordinary
+# datacenter IPs, and hand each page back to the walker Worker.
+#
+# Separate from `relay` on purpose. That job fetches today's news for 92
+# sources and must finish in well under its window; this one is a long crawl
+# that deliberately runs to a time budget and resumes next time. Sharing a
+# workflow would mean one starving the other, and sharing a concurrency group
+# would mean the news waiting behind the history.
+on:
+  schedule:
+    # Hourly. The archives are finite and shrinking, so there is no reason to
+    # push harder at publishers who are, after all, doing us a favour.
+    - cron: "25 * * * *"
+  workflow_dispatch: {}
+
+concurrency:
+  group: wp-history
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  history:
+    runs-on: ubuntu-latest
+    # The script stops itself at 9 minutes; this is the backstop, not the plan.
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Relay archive pages to the walker
+        env:
+          WALK_URL: ${{ secrets.WALK_URL }}
+          WALK_SECRET: ${{ secrets.WALK_SECRET }}
+        run: node wp-history.mjs
