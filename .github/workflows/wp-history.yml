@@ -18,9 +18,19 @@ name: wp-history
 # minutes throughout. The walker Worker now speaks that surface, and this job
 # hands it pages the same way it always has: fetch the URL /relay/domains
 # gives, POST the bytes to /relay/page.
+#
+# EVERY 20 MINUTES, 2026-08-03. As of that date this job is cyprustimes.com's
+# ONLY route — it answers a Cloudflare challenge to the walker Worker itself,
+# from every colo tried, so there is no faster lane to move it to. At 97
+# pages per 9-minute run the archive (421,770 posts, cursor then at page 733)
+# was ~18 days out at hourly cadence; three runs an hour instead of one cuts
+# that to ~6-9 days at the same per-request pacing, since each run is still
+# capped at BUDGET_MS. `concurrency.group` + `cancel-in-progress: false` below
+# already serialise runs, and the 12-minute job timeout is comfortably under
+# 20, so runs cannot overlap.
 on:
   schedule:
-    - cron: "15 * * * *"
+    - cron: "*/20 * * * *"
   workflow_dispatch: {}
 
 concurrency:
