@@ -1,17 +1,5 @@
 [
   {
-    "source": "ANT1 News",
-    "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Aant1news.gr&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://www.ant1news.gr"
-  },
-  {
-    "source": "APE-MPE",
-    "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Aamna.gr&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://www.amna.gr"
-  },
-  {
     "source": "AgrinioPress",
     "kind": "rss",
     "url": "https://www.agriniopress.gr/feed/",
@@ -28,6 +16,18 @@
     "kind": "rss",
     "url": "https://www.alphanews.live/feed/",
     "referer": "https://www.alphanews.live"
+  },
+  {
+    "source": "ANT1 News",
+    "kind": "rss",
+    "url": "https://news.google.com/rss/search?q=site%3Aant1news.gr&hl=el&gl=GR&ceid=GR:el",
+    "referer": "https://www.ant1news.gr"
+  },
+  {
+    "source": "APE-MPE",
+    "kind": "rss",
+    "url": "https://news.google.com/rss/search?q=site%3Aamna.gr&hl=el&gl=GR&ceid=GR:el",
+    "referer": "https://www.amna.gr"
   },
   {
     "source": "Astinomiko",
@@ -96,16 +96,34 @@
     "referer": "https://www.dikastikoreportaz.gr"
   },
   {
+    "source": "e-Thessalia",
+    "kind": "rss",
+    "url": "https://news.google.com/rss/search?q=site%3Ae-thessalia.gr&hl=el&gl=GR&ceid=GR:el",
+    "referer": "https://www.e-thessalia.gr"
+  },
+  {
     "source": "Economy Today",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Aeconomytoday.sigmalive.com&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://economytoday.sigmalive.com"
   },
   {
+    "source": "ecopress",
+    "kind": "rss",
+    "url": "https://ecopress.gr/feed/",
+    "referer": "https://ecopress.gr"
+  },
+  {
     "source": "Efsyn",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Aefsyn.gr&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://www.efsyn.gr"
+  },
+  {
+    "source": "elCulture",
+    "kind": "rss",
+    "url": "https://www.elculture.gr/feed/",
+    "referer": "https://www.elculture.gr"
   },
   {
     "source": "Eleftheros Typos",
@@ -126,6 +144,12 @@
     "referer": "https://www.enikos.gr"
   },
   {
+    "source": "FPress",
+    "kind": "rss",
+    "url": "https://www.fpress.gr/feed/",
+    "referer": "https://www.fpress.gr"
+  },
+  {
     "source": "Gavros",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Agavros.gr&hl=el&gl=GR&ceid=GR:el",
@@ -144,16 +168,34 @@
     "referer": "https://www.geopolitics-news.gr"
   },
   {
+    "source": "gov.cy",
+    "kind": "wpjson",
+    "url": "https://www.gov.cy/wp-json/wp/v2/posts?per_page=20&_embed=wp:featuredmedia&_fields=id,date,date_gmt,title,link,excerpt,content,_embedded",
+    "referer": "https://www.gov.cy"
+  },
+  {
     "source": "Govastileto",
     "kind": "rss",
     "url": "https://www.govastileto.gr/feed/",
     "referer": "https://www.govastileto.gr"
   },
   {
+    "source": "healthstat",
+    "kind": "sitemap",
+    "url": "https://www.healthstat.gr/sitemap_news.xml",
+    "referer": "https://www.healthstat.gr"
+  },
+  {
     "source": "HuffPost Greece",
     "kind": "rss",
     "url": "https://www.huffingtonpost.gr/feed/",
     "referer": "https://www.huffingtonpost.gr"
+  },
+  {
+    "source": "iatronet",
+    "kind": "rss",
+    "url": "https://news.google.com/rss/search?q=site%3Aiatronet.gr&hl=el&gl=GR&ceid=GR:el",
+    "referer": "https://www.iatronet.gr"
   },
   {
     "source": "Ilia Live",
@@ -174,12 +216,6 @@
     "referer": "https://www.in.gr"
   },
   {
-    "source": "InStyle",
-    "kind": "rss",
-    "url": "https://www.instyle.gr/feed/",
-    "referer": "https://www.instyle.gr"
-  },
-  {
     "source": "InfoKids",
     "kind": "sitemap",
     "url": "https://www.infokids.gr/news-sitemap.xml",
@@ -196,6 +232,18 @@
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Ainsomnia.gr&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://insomnia.gr"
+  },
+  {
+    "source": "InStyle",
+    "kind": "rss",
+    "url": "https://www.instyle.gr/feed/",
+    "referer": "https://www.instyle.gr"
+  },
+  {
+    "source": "iPaidia",
+    "kind": "sitemap",
+    "url": "https://www.ipaidia.gr/sitemap_news.xml",
+    "referer": "https://www.ipaidia.gr"
   },
   {
     "source": "Karfitsa",
@@ -246,6 +294,12 @@
     "referer": "https://www.megatv.com"
   },
   {
+    "source": "Metafores Press",
+    "kind": "rss",
+    "url": "https://www.metaforespress.gr/feed/",
+    "referer": "https://www.metaforespress.gr"
+  },
+  {
     "source": "Militaire",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Amilitaire.gr&hl=el&gl=GR&ceid=GR:el",
@@ -282,12 +336,6 @@
     "referer": "https://www.newsbeast.gr"
   },
   {
-    "source": "OT.gr",
-    "kind": "rss",
-    "url": "https://www.ot.gr/feed/",
-    "referer": "https://www.ot.gr"
-  },
-  {
     "source": "Offsite",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Aoffsite.com.cy&hl=el&gl=GR&ceid=GR:el",
@@ -298,6 +346,12 @@
     "kind": "rss",
     "url": "https://www.omegalive.com.cy/rss",
     "referer": "https://www.omegalive.com.cy"
+  },
+  {
+    "source": "OT.gr",
+    "kind": "rss",
+    "url": "https://www.ot.gr/feed/",
+    "referer": "https://www.ot.gr"
   },
   {
     "source": "Paideia News",
@@ -322,6 +376,12 @@
     "kind": "rss",
     "url": "https://popaganda.gr/feed/",
     "referer": "https://popaganda.gr"
+  },
+  {
+    "source": "PortNet",
+    "kind": "rss",
+    "url": "https://www.portnet.gr/feed/",
+    "referer": "https://www.portnet.gr"
   },
   {
     "source": "Pressaris",
@@ -390,12 +450,6 @@
     "referer": "https://www.stockwatch.com.cy"
   },
   {
-    "source": "TV Open",
-    "kind": "rss",
-    "url": "https://www.tvopen.gr/rss",
-    "referer": "https://www.tvopen.gr"
-  },
-  {
     "source": "Taxheaven",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Ataxheaven.gr&hl=el&gl=GR&ceid=GR:el",
@@ -424,6 +478,12 @@
     "kind": "rss",
     "url": "https://www.tovima.gr/feed/",
     "referer": "https://www.tovima.gr"
+  },
+  {
+    "source": "TV Open",
+    "kind": "rss",
+    "url": "https://www.tvopen.gr/rss",
+    "referer": "https://www.tvopen.gr"
   },
   {
     "source": "Voicenews",
@@ -460,48 +520,6 @@
     "kind": "rss",
     "url": "https://www.zougla.gr/feed/",
     "referer": "https://www.zougla.gr"
-  },
-  {
-    "source": "e-Thessalia",
-    "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Ae-thessalia.gr&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://www.e-thessalia.gr"
-  },
-  {
-    "source": "ecopress",
-    "kind": "rss",
-    "url": "https://ecopress.gr/feed/",
-    "referer": "https://ecopress.gr"
-  },
-  {
-    "source": "elCulture",
-    "kind": "rss",
-    "url": "https://www.elculture.gr/feed/",
-    "referer": "https://www.elculture.gr"
-  },
-  {
-    "source": "gov.cy",
-    "kind": "wpjson",
-    "url": "https://www.gov.cy/wp-json/wp/v2/posts?per_page=20&_embed=wp:featuredmedia&_fields=id,date,date_gmt,title,link,excerpt,content,_embedded",
-    "referer": "https://www.gov.cy"
-  },
-  {
-    "source": "healthstat",
-    "kind": "sitemap",
-    "url": "https://www.healthstat.gr/sitemap_news.xml",
-    "referer": "https://www.healthstat.gr"
-  },
-  {
-    "source": "iPaidia",
-    "kind": "sitemap",
-    "url": "https://www.ipaidia.gr/sitemap_news.xml",
-    "referer": "https://www.ipaidia.gr"
-  },
-  {
-    "source": "iatronet",
-    "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Aiatronet.gr&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://www.iatronet.gr"
   },
   {
     "source": "Βουλή Αντιπροσώπων",
