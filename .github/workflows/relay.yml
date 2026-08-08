@@ -6,7 +6,7 @@ on:
   workflow_dispatch: {}
 
 concurrency:
-  group: relay
+  group: relay-${{ github.event_name }}
   cancel-in-progress: false
 
 permissions:
