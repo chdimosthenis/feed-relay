@@ -504,12 +504,6 @@
     "referer": "https://techit.gr"
   },
   {
-    "source": "ThessNews",
-    "kind": "rss",
-    "url": "https://thessnews.gr/feed/",
-    "referer": "https://thessnews.gr"
-  },
-  {
     "source": "Thestival",
     "kind": "rss",
     "url": "https://www.thestival.gr/feed/",
