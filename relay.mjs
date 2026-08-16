@@ -105,6 +105,15 @@ function aggregatorUrl(referer) {
 
 async function relayOne(t) {
   let kind = t.kind;
+  // ⚠ THIS FLAG USED TO BE DERIVED AND WAS WRONG FOR MOST OF THE ROSTER.
+  // It read `kind !== t.kind`, which only differs when a SITEMAP target falls
+  // back to the aggregator's RSS. When an `rss` target falls back, the
+  // aggregator payload is ALSO `rss`, so the comparison returned false while
+  // the publisher had in fact been replaced by Google News. Measured
+  // 2026-08-16: targets.json holds 75 rss of 88, so the derived flag was blind
+  // to 85% of the roster — precisely the cohort the flag exists to expose.
+  // Set it where the substitution happens, and never infer it downstream.
+  let viaFallback = false;
   let payload;
   try {
     payload = await fetchPayload(t);
@@ -118,6 +127,7 @@ async function relayOne(t) {
       url: aggregatorUrl(t.referer),
     });
     kind = "rss";
+    viaFallback = true;
   }
   const post = await fetch(`${FETCHER_URL}/ingest-external`, {
     method: "POST",
@@ -125,12 +135,17 @@ async function relayOne(t) {
       Authorization: `Bearer ${FETCHER_SECRET}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ source: t.source, kind, payload }),
+    // `viaFallback` MUST travel with the payload. Until 2026-08-16 it was
+    // computed here, printed to the run log, and dropped — so the consumer
+    // wrote every aggregator-substituted payload as an ordinary success and
+    // stamped a freshness date from Google News. Zero failures, zero alerts,
+    // a green board for days over two nearly-silent publishers.
+    body: JSON.stringify({ source: t.source, kind, payload, viaFallback }),
     signal: AbortSignal.timeout(30_000),
   });
   const bodyText = (await post.text()).trim();
   if (!post.ok) throw new Error(`fetcher HTTP ${post.status}: ${bodyText}`);
-  return { bytes: payload.length, kind, viaFallback: kind !== t.kind };
+  return { bytes: payload.length, kind, viaFallback };
 }
 
 if (!FETCHER_URL || !FETCHER_SECRET) {
@@ -140,6 +155,10 @@ if (!FETCHER_URL || !FETCHER_SECRET) {
 
 let ok = 0;
 let failures = 0;
+// Counted separately from `ok` on purpose. A run where every publisher was
+// substituted by the aggregator is not a healthy run, and until this line
+// existed the summary reported it as one.
+const fallbacks = [];
 const queue = [...TARGETS];
 
 async function worker() {
@@ -149,6 +168,7 @@ async function worker() {
     try {
       const r = await relayOne(t);
       ok++;
+      if (r.viaFallback) fallbacks.push(t.source);
       console.log(
         `✓ ${t.source} (${r.kind}${r.viaFallback ? ", fallback" : ""}): relayed ${r.bytes} bytes`,
       );
@@ -163,7 +183,12 @@ await Promise.all(
   Array.from({ length: Math.min(CONCURRENCY, TARGETS.length) }, worker),
 );
 
-console.log(`\n${ok} relayed · ${failures} failed · ${TARGETS.length} targets`);
+console.log(
+  `\n${ok} relayed · ${fallbacks.length} via aggregator · ${failures} failed · ${TARGETS.length} targets`,
+);
+if (fallbacks.length > 0) {
+  console.log(`  aggregator-substituted: ${fallbacks.join(", ")}`);
+}
 // Red run only when NOTHING got through — individual publisher hiccups are
 // routine at this roster size and self-heal on the next half-hour fire.
 if (ok === 0) process.exit(1);
