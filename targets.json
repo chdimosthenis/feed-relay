@@ -1,5 +1,11 @@
 [
   {
+    "source": "Ανεξάρτητος",
+    "kind": "rss",
+    "url": "https://www.anexartitos.gr/feed/",
+    "referer": "https://www.anexartitos.gr"
+  },
+  {
     "source": "AgrinioPress",
     "kind": "rss",
     "url": "https://www.agriniopress.gr/feed/",
@@ -52,12 +58,6 @@
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Abookpress.gr&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://bookpress.gr"
-  },
-  {
-    "source": "Brief",
-    "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Abrief.com.cy&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://www.brief.com.cy"
   },
   {
     "source": "BusinessNews",
@@ -342,12 +342,6 @@
     "referer": "https://www.newsbeast.gr"
   },
   {
-    "source": "Offsite",
-    "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Aoffsite.com.cy&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://www.offsite.com.cy"
-  },
-  {
     "source": "Omega Cyprus",
     "kind": "rss",
     "url": "https://www.omegalive.com.cy/rss",
@@ -382,6 +376,12 @@
     "kind": "rss",
     "url": "https://popaganda.gr/feed/",
     "referer": "https://popaganda.gr"
+  },
+  {
+    "source": "PortNet",
+    "kind": "rss",
+    "url": "https://www.portnet.gr/feed/",
+    "referer": "https://www.portnet.gr"
   },
   {
     "source": "Pressaris",
