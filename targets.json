@@ -514,5 +514,47 @@
     "kind": "rss",
     "url": "https://www.zougla.gr/feed/",
     "referer": "https://www.zougla.gr"
+  },
+  {
+    "source": "Logotypos.gr",
+    "kind": "rss",
+    "url": "https://www.logotypos.gr/feed/",
+    "referer": "https://www.logotypos.gr"
+  },
+  {
+    "source": "MAG24",
+    "kind": "rss",
+    "url": "https://www.mag24.gr/feed/",
+    "referer": "https://www.mag24.gr"
+  },
+  {
+    "source": "OTA VOICE",
+    "kind": "rss",
+    "url": "https://otavoice.gr/feed/",
+    "referer": "https://otavoice.gr"
+  },
+  {
+    "source": "Radiomax.gr",
+    "kind": "rss",
+    "url": "https://radiomax.gr/feed/",
+    "referer": "https://radiomax.gr"
+  },
+  {
+    "source": "Real Voice 99.5",
+    "kind": "rss",
+    "url": "https://realvoice995.gr/feed/",
+    "referer": "https://realvoice995.gr"
+  },
+  {
+    "source": "Thraki Online",
+    "kind": "rss",
+    "url": "https://thrakionline.gr/feed/",
+    "referer": "https://thrakionline.gr"
+  },
+  {
+    "source": "Πρωινός Λόγος",
+    "kind": "rss",
+    "url": "https://www.prlogos.gr/feed/",
+    "referer": "https://prlogos.gr"
   }
 ]
