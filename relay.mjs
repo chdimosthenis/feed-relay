@@ -83,7 +83,18 @@ async function fetchPayload(t) {
     await new Promise((r) => setTimeout(r, 3000));
     return fetchPayload({ ...t, _retried: true });
   }
-  if (!res.ok) throw new Error(`publisher HTTP ${res.status}`);
+  if (!res.ok) {
+    // Ο ΚΩΔΙΚΟΣ ΤΑΞΙΔΕΥΕΙ ΜΕ ΤΟ ΣΦΑΛΜΑ. Ήταν μόνο μέσα στο κείμενο του
+    // μηνύματος, οπότε ο καλών θα έπρεπε να το ξαναδιαβάσει με regex — και
+    // δεν το έκανε: το πετούσε ολόκληρο.
+    const err = new Error(`publisher HTTP ${res.status}`);
+    err.status = res.status;
+    err.snippet = (await res.text().catch(() => ""))
+      .slice(0, 160)
+      .replace(/\s+/g, " ")
+      .trim();
+    throw err;
+  }
   const payload = await res.text();
   if (payload.length > MAX_PAYLOAD) {
     if (t.kind === "html") return payload.slice(0, MAX_PAYLOAD);
@@ -103,6 +114,37 @@ function aggregatorUrl(referer) {
   return `https://news.google.com/rss/search?q=${q}&hl=el&gl=GR&ceid=GR:el`;
 }
 
+/**
+ * ⛔⛔ Ο ΑΝΑΜΕΤΑΔΟΤΗΣ ΔΕΝ ΑΠΟΦΑΣΙΖΕΙ ΠΙΑ — ΒΗΜΑ 10, 2026-08-17.
+ *
+ * Ρωτά τον Worker τι να κάνει με μια άρνηση εκδότη. Ο Worker έχει τα στοιχεία
+ * που λείπουν εδώ: τι βλέπει το ΔΙΚΟ ΤΟΥ colo (μετακινήθηκε τρεις φορές σε μία
+ * μέρα, AMS → IAD → SIN), σε τι κατάσταση είναι η πηγή, και ότι μια διεύθυνση
+ * Google είναι αδιαφανές blob που ΔΕΝ επιδιορθώνεται αργότερα.
+ *
+ * ⚠ ΑΠΟΤΥΧΙΑ ΤΗΣ ΕΡΩΤΗΣΗΣ ΔΕΝ ΣΤΑΜΑΤΑ ΤΗΝ ΥΛΗ. Αν ο Worker δεν απαντήσει,
+ * κρατιέται η παλιά συμπεριφορά (συλλέκτης): το να σιωπήσει μια πηγή επειδή
+ * έπεσε μια βοηθητική κλήση είναι χειρότερο από μια ΔΗΛΩΜΕΝΗ υποβάθμιση.
+ */
+async function askRouting(source, refusalStatus, refusalMessage) {
+  try {
+    const res = await fetch(`${FETCHER_URL}/relay-refusal`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${FETCHER_SECRET}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ source, refusalStatus, refusalMessage }),
+      signal: AbortSignal.timeout(10_000),
+    });
+    if (!res.ok)
+      return { then: "aggregator", reason: `ο Worker απάντησε ${res.status}` };
+    return await res.json();
+  } catch (e) {
+    return { then: "aggregator", reason: `η ερώτηση δρομολόγησης απέτυχε: ${e.message}` };
+  }
+}
+
 async function relayOne(t) {
   let kind = t.kind;
   // ⚠ THIS FLAG USED TO BE DERIVED AND WAS WRONG FOR MOST OF THE ROSTER.
@@ -115,12 +157,23 @@ async function relayOne(t) {
   // Set it where the substitution happens, and never infer it downstream.
   let viaFallback = false;
   let payload;
+  let refusalStatus = null;
+  let refusalMessage = null;
   try {
     payload = await fetchPayload(t);
   } catch (e) {
     // Only a document-shaped source has a meaningful fallback; a wp-json or
     // homepage-scrape mapper cannot read an aggregator feed.
     if (t.kind !== "rss" && t.kind !== "sitemap") throw e;
+    refusalStatus = typeof e.status === "number" ? e.status : null;
+    refusalMessage = e.snippet || e.message || null;
+    // Η ΑΠΟΦΑΣΗ ΕΙΝΑΙ ΤΟΥ WORKER. Δες askRouting παραπάνω.
+    const routing = await askRouting(t.source, refusalStatus, refusalMessage);
+    if (routing.then !== "aggregator") {
+      throw new Error(
+        `${e.message} → ο Worker είπε ${routing.then}: ${routing.reason}`,
+      );
+    }
     payload = await fetchPayload({
       ...t,
       kind: "rss",
@@ -140,7 +193,7 @@ async function relayOne(t) {
     // wrote every aggregator-substituted payload as an ordinary success and
     // stamped a freshness date from Google News. Zero failures, zero alerts,
     // a green board for days over two nearly-silent publishers.
-    body: JSON.stringify({ source: t.source, kind, payload, viaFallback }),
+    body: JSON.stringify({ source: t.source, kind, payload, viaFallback, refusalStatus, refusalMessage }),
     signal: AbortSignal.timeout(30_000),
   });
   const bodyText = (await post.text()).trim();
