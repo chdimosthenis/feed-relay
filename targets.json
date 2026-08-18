@@ -586,5 +586,11 @@
     "kind": "rss",
     "url": "https://www.zougla.gr/feed/",
     "referer": "https://www.zougla.gr"
+  },
+  {
+    "source": "The Caller",
+    "kind": "rss",
+    "url": "https://www.thecaller.gr/feed/",
+    "referer": "https://www.thecaller.gr"
   }
 ]
