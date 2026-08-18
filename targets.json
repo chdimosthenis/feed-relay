@@ -66,6 +66,12 @@
     "referer": "https://autotriti.gr"
   },
   {
+    "source": "BasketNews.gr",
+    "kind": "sitemap",
+    "url": "https://www.basketnews.gr/component/osmap/?view=xml&id=1&format=xml",
+    "referer": "https://basketnews.gr"
+  },
+  {
     "source": "BookPress",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Abookpress.gr&hl=el&gl=GR&ceid=GR:el",
