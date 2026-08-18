@@ -41,6 +41,8 @@ const FETCH_TIMEOUT_MS = 20_000;
 // The fetcher's guard is 2 MiB. Truncate oversized HTML (cheerio parses a
 // truncated homepage fine — the top cards survive); never truncate JSON,
 // and never truncate XML (a half-closed document parses to nothing).
+import { resolveAggregatorLinks } from "./resolve-google.mjs";
+
 const MAX_PAYLOAD = 1_900_000;
 
 const BROWSER_HEADERS = {
@@ -145,6 +147,7 @@ async function askRouting(source, refusalStatus, refusalMessage) {
   }
 }
 
+
 async function relayOne(t) {
   let kind = t.kind;
   // ⚠ THIS FLAG USED TO BE DERIVED AND WAS WRONG FOR MOST OF THE ROSTER.
@@ -159,6 +162,7 @@ async function relayOne(t) {
   let payload;
   let refusalStatus = null;
   let refusalMessage = null;
+  let resolvedNote = "";
   try {
     payload = await fetchPayload(t);
   } catch (e) {
@@ -181,6 +185,20 @@ async function relayOne(t) {
     });
     kind = "rss";
     viaFallback = true;
+    // ⛔ Η ΑΝΑΛΥΣΗ ΓΙΝΕΤΑΙ ΕΔΩ, ΠΡΙΝ ΦΥΓΕΙ ΤΟ ΦΟΡΤΙΟ. Απόφαση του χειριστή
+    // 2026-08-18: «βαλε αναλυση διευθυνσης, οχι απορριψη».
+    try {
+      const r = await resolveAggregatorLinks(payload, BROWSER_HEADERS);
+      payload = r.xml;
+      // ⚠ ΛΕΓΕΤΑΙ ΔΥΝΑΤΑ, ΚΑΙ ΤΟ ΝΟΥΜΕΡΟ ΕΙΝΑΙ ΚΛΑΣΜΑ. Μια σιωπηλή πτώση στο
+      // 0/25 σημαίνει ότι το Google άλλαξε σελίδα, και είναι η μόνη ένδειξη
+      // που θα υπάρξει — δεν σπάει τίποτα, απλώς σταματά να διορθώνει.
+      resolvedNote =
+        `, διευθύνσεις ${r.resolved}/${r.total}` +
+        (r.dropped > 0 ? ` (+${r.dropped} πάνω από την οροφή, ΑΜΕΤΡΗΤΕΣ)` : "");
+    } catch {
+      resolvedNote = ", ανάλυση ΑΠΕΤΥΧΕ";
+    }
   }
   const post = await fetch(`${FETCHER_URL}/ingest-external`, {
     method: "POST",
@@ -198,7 +216,7 @@ async function relayOne(t) {
   });
   const bodyText = (await post.text()).trim();
   if (!post.ok) throw new Error(`fetcher HTTP ${post.status}: ${bodyText}`);
-  return { bytes: payload.length, kind, viaFallback };
+  return { bytes: payload.length, kind, viaFallback, resolvedNote };
 }
 
 if (!FETCHER_URL || !FETCHER_SECRET) {
@@ -223,7 +241,7 @@ async function worker() {
       ok++;
       if (r.viaFallback) fallbacks.push(t.source);
       console.log(
-        `✓ ${t.source} (${r.kind}${r.viaFallback ? ", fallback" : ""}): relayed ${r.bytes} bytes`,
+        `✓ ${t.source} (${r.kind}${r.viaFallback ? ", fallback" : ""}${r.resolvedNote ?? ""}): relayed ${r.bytes} bytes`,
       );
     } catch (e) {
       failures++;
