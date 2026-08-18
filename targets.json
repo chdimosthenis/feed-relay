@@ -6,6 +6,12 @@
     "referer": "https://www.anexartitos.gr"
   },
   {
+    "source": "Ο ΔΗΜΟΤΗΣ",
+    "kind": "sitemap",
+    "url": "http://www.dimotisnews.gr/sitemap.xml",
+    "referer": "https://dimotisnews.gr"
+  },
+  {
     "source": "Πρωινός Λόγος",
     "kind": "rss",
     "url": "https://www.prlogos.gr/feed/",
