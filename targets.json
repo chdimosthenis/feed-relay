@@ -592,5 +592,29 @@
     "kind": "rss",
     "url": "https://www.thecaller.gr/feed/",
     "referer": "https://www.thecaller.gr"
+  },
+  {
+    "source": "economico.gr",
+    "kind": "rss",
+    "url": "https://economico.gr/feed/",
+    "referer": "https://economico.gr"
+  },
+  {
+    "source": "Flamis.gr",
+    "kind": "rss",
+    "url": "https://flamis.gr/feed/",
+    "referer": "https://flamis.gr"
+  },
+  {
+    "source": "Γεγονότα",
+    "kind": "rss",
+    "url": "https://gegonota.news/feed/",
+    "referer": "https://gegonota.news"
+  },
+  {
+    "source": "Τι Νέα Λάρισα",
+    "kind": "rss",
+    "url": "https://tinealarissa.gr/feed/",
+    "referer": "https://tinealarissa.gr"
   }
 ]
