@@ -50,7 +50,7 @@
   {
     "source": "Astinomiko",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Aastinomiko.gr&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://astinomiko.gr/feed/",
     "referer": "https://astinomiko.gr"
   },
   {
@@ -116,7 +116,7 @@
   {
     "source": "e-Thessalia",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Ae-thessalia.gr&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://www.e-thessalia.gr/feed/",
     "referer": "https://www.e-thessalia.gr"
   },
   {
@@ -140,7 +140,7 @@
   {
     "source": "Efsyn",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Aefsyn.gr&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://www.efsyn.gr/feed/",
     "referer": "https://www.efsyn.gr"
   },
   {
@@ -296,7 +296,7 @@
   {
     "source": "Larissanet",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Alarissanet.gr&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://www.larissanet.gr/feed/",
     "referer": "https://www.larissanet.gr"
   },
   {
@@ -344,7 +344,7 @@
   {
     "source": "Militaire",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Amilitaire.gr&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://www.militaire.gr/feed/",
     "referer": "https://www.militaire.gr"
   },
   {
