@@ -6,6 +6,12 @@
     "referer": "https://www.anexartitos.gr"
   },
   {
+    "source": "Πρωινός Λόγος",
+    "kind": "rss",
+    "url": "https://www.prlogos.gr/feed/",
+    "referer": "https://prlogos.gr"
+  },
+  {
     "source": "AgrinioPress",
     "kind": "rss",
     "url": "https://www.agriniopress.gr/feed/",
@@ -288,6 +294,24 @@
     "referer": "https://www.lifo.gr"
   },
   {
+    "source": "Logotypos.gr",
+    "kind": "rss",
+    "url": "https://www.logotypos.gr/feed/",
+    "referer": "https://logotypos.gr"
+  },
+  {
+    "source": "MAG24",
+    "kind": "rss",
+    "url": "https://www.mag24.gr/feed/",
+    "referer": "https://mag24.gr"
+  },
+  {
+    "source": "Magnesia News",
+    "kind": "sitemap",
+    "url": "https://magnesianews.gr/sitemap.xml",
+    "referer": "https://magnesianews.gr"
+  },
+  {
     "source": "Makeleio",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Amakeleio.gr&hl=el&gl=GR&ceid=GR:el",
@@ -354,6 +378,12 @@
     "referer": "https://www.ot.gr"
   },
   {
+    "source": "OTA VOICE",
+    "kind": "rss",
+    "url": "https://otavoice.gr/feed/",
+    "referer": "https://otavoice.gr"
+  },
+  {
     "source": "Paideia News",
     "kind": "rss",
     "url": "https://paideia-news.com/rss.xml",
@@ -396,16 +426,34 @@
     "referer": "https://www.proinoslogos.gr"
   },
   {
+    "source": "protionline.gr",
+    "kind": "rss",
+    "url": "https://protionline.gr/feed/",
+    "referer": "https://protionline.gr"
+  },
+  {
     "source": "Proto Thema",
     "kind": "rss",
     "url": "https://www.protothema.gr/rss",
     "referer": "https://www.protothema.gr"
   },
   {
+    "source": "Radiomax.gr",
+    "kind": "rss",
+    "url": "https://radiomax.gr/feed/",
+    "referer": "https://radiomax.gr"
+  },
+  {
     "source": "Reader",
     "kind": "rss",
     "url": "https://www.reader.gr/rss.xml",
     "referer": "https://www.reader.gr"
+  },
+  {
+    "source": "Real Voice 99.5",
+    "kind": "rss",
+    "url": "https://realvoice995.gr/feed/",
+    "referer": "https://realvoice995.gr"
   },
   {
     "source": "Reporter Cyprus",
@@ -462,10 +510,22 @@
     "referer": "https://techit.gr"
   },
   {
+    "source": "The Opinion",
+    "kind": "sitemap",
+    "url": "https://www.theopinion.gr/sitemap_news.xml",
+    "referer": "https://theopinion.gr"
+  },
+  {
     "source": "Thestival",
     "kind": "rss",
     "url": "https://www.thestival.gr/feed/",
     "referer": "https://www.thestival.gr"
+  },
+  {
+    "source": "Thraki Online",
+    "kind": "rss",
+    "url": "https://thrakionline.gr/feed/",
+    "referer": "https://thrakionline.gr"
   },
   {
     "source": "To Vima",
@@ -514,47 +574,5 @@
     "kind": "rss",
     "url": "https://www.zougla.gr/feed/",
     "referer": "https://www.zougla.gr"
-  },
-  {
-    "source": "Logotypos.gr",
-    "kind": "rss",
-    "url": "https://www.logotypos.gr/feed/",
-    "referer": "https://www.logotypos.gr"
-  },
-  {
-    "source": "MAG24",
-    "kind": "rss",
-    "url": "https://www.mag24.gr/feed/",
-    "referer": "https://www.mag24.gr"
-  },
-  {
-    "source": "OTA VOICE",
-    "kind": "rss",
-    "url": "https://otavoice.gr/feed/",
-    "referer": "https://otavoice.gr"
-  },
-  {
-    "source": "Radiomax.gr",
-    "kind": "rss",
-    "url": "https://radiomax.gr/feed/",
-    "referer": "https://radiomax.gr"
-  },
-  {
-    "source": "Real Voice 99.5",
-    "kind": "rss",
-    "url": "https://realvoice995.gr/feed/",
-    "referer": "https://realvoice995.gr"
-  },
-  {
-    "source": "Thraki Online",
-    "kind": "rss",
-    "url": "https://thrakionline.gr/feed/",
-    "referer": "https://thrakionline.gr"
-  },
-  {
-    "source": "Πρωινός Λόγος",
-    "kind": "rss",
-    "url": "https://www.prlogos.gr/feed/",
-    "referer": "https://prlogos.gr"
   }
 ]
