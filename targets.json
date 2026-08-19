@@ -6,6 +6,12 @@
     "referer": "https://www.anexartitos.gr"
   },
   {
+    "source": "Γεγονότα",
+    "kind": "rss",
+    "url": "https://gegonota.news/feed/",
+    "referer": "https://gegonota.news"
+  },
+  {
     "source": "Ο ΔΗΜΟΤΗΣ",
     "kind": "sitemap",
     "url": "http://www.dimotisnews.gr/sitemap.xml",
@@ -16,6 +22,12 @@
     "kind": "rss",
     "url": "https://www.prlogos.gr/feed/",
     "referer": "https://prlogos.gr"
+  },
+  {
+    "source": "Τι Νέα Λάρισα",
+    "kind": "rss",
+    "url": "https://tinealarissa.gr/feed/",
+    "referer": "https://tinealarissa.gr"
   },
   {
     "source": "AgrinioPress",
@@ -64,6 +76,12 @@
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Aautotriti.gr&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://autotriti.gr"
+  },
+  {
+    "source": "Axianews",
+    "kind": "rss",
+    "url": "https://news.google.com/rss/search?q=site%3Aaxianews.gr&hl=el&gl=GR&ceid=GR:el",
+    "referer": "https://axianews.gr"
   },
   {
     "source": "BasketNews.gr",
@@ -120,6 +138,12 @@
     "referer": "https://www.e-thessalia.gr"
   },
   {
+    "source": "economico.gr",
+    "kind": "rss",
+    "url": "https://economico.gr/feed/",
+    "referer": "https://economico.gr"
+  },
+  {
     "source": "Economy Today",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Aeconomytoday.sigmalive.com&hl=el&gl=GR&ceid=GR:el",
@@ -156,6 +180,12 @@
     "referer": "https://www.eleftherostypos.gr"
   },
   {
+    "source": "ENA News Portal",
+    "kind": "sitemap",
+    "url": "https://www.enanews.gr/news-sitemap.xml",
+    "referer": "https://enanews.gr"
+  },
+  {
     "source": "Energypress",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Aenergypress.gr&hl=el&gl=GR&ceid=GR:el",
@@ -166,6 +196,12 @@
     "kind": "rss",
     "url": "https://www.enikos.gr/feed/",
     "referer": "https://www.enikos.gr"
+  },
+  {
+    "source": "Flamis.gr",
+    "kind": "rss",
+    "url": "https://flamis.gr/feed/",
+    "referer": "https://flamis.gr"
   },
   {
     "source": "FPress",
@@ -522,6 +558,12 @@
     "referer": "https://techit.gr"
   },
   {
+    "source": "The Caller",
+    "kind": "rss",
+    "url": "https://www.thecaller.gr/feed/",
+    "referer": "https://www.thecaller.gr"
+  },
+  {
     "source": "The Opinion",
     "kind": "sitemap",
     "url": "https://www.theopinion.gr/sitemap_news.xml",
@@ -586,35 +628,5 @@
     "kind": "rss",
     "url": "https://www.zougla.gr/feed/",
     "referer": "https://www.zougla.gr"
-  },
-  {
-    "source": "The Caller",
-    "kind": "rss",
-    "url": "https://www.thecaller.gr/feed/",
-    "referer": "https://www.thecaller.gr"
-  },
-  {
-    "source": "economico.gr",
-    "kind": "rss",
-    "url": "https://economico.gr/feed/",
-    "referer": "https://economico.gr"
-  },
-  {
-    "source": "Flamis.gr",
-    "kind": "rss",
-    "url": "https://flamis.gr/feed/",
-    "referer": "https://flamis.gr"
-  },
-  {
-    "source": "Γεγονότα",
-    "kind": "rss",
-    "url": "https://gegonota.news/feed/",
-    "referer": "https://gegonota.news"
-  },
-  {
-    "source": "Τι Νέα Λάρισα",
-    "kind": "rss",
-    "url": "https://tinealarissa.gr/feed/",
-    "referer": "https://tinealarissa.gr"
   }
 ]
