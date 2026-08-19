@@ -1,0 +1,106 @@
+name: probe
+
+# ⛔⛔ Η ΤΡΙΤΗ ΓΡΑΜΜΗ, ΠΟΥ ΔΕΝ ΕΙΧΕ ΟΡΓΑΝΟ.
+#
+# Οι γραμμές είναι ΤΡΕΙΣ και δεν προβλέπει η μία την άλλη: το σπίτι του
+# χειριστή (ATH), το colo του Worker (αλλάζει ανά κύκλο· 2026-08-19 έτρεχε TPE),
+# και ο runner του GitHub (εύρη IP της Microsoft/Azure στις ΗΠΑ). Ο συλλέκτης
+# έχει ήδη δύο όργανα γι' αυτές τις δύο πρώτες: το `GET /probe` (τρέχει στο colo
+# ΤΟΥ ΑΙΤΟΥΝΤΑ) και το `POST /lane-probe?inCron=1` (τρέχει μέσα στον χρονισμένο
+# κύκλο). Για τη ΤΡΙΤΗ, τον runner, δεν υπήρχε κανένα: το `relay.yml` δέχεται
+# μόνο `schedule` και `workflow_dispatch` χωρίς είσοδο, οπότε το μόνο που
+# μπορούσε να μάθει κανείς ήταν ό,τι έτυχε να γράψει το log μιας πλήρους
+# εκτέλεσης.
+#
+# Αυτό είναι το όργανο. Ανοίγει ΜΙΑ διεύθυνση με τις ΙΔΙΕΣ κεφαλίδες που
+# χρησιμοποιεί το `relay.mjs` και τυπώνει κωδικό, `server`, `cf-ray` (που
+# ονομάζει το colo της Cloudflare που απάντησε) και την αρχή του σώματος.
+# Δημόσιο repo, δωρεάν λεπτά, ΜΗΔΕΝ μυστικά — δεν αγγίζει ούτε το
+# `FETCHER_SECRET` ούτε τη D1.
+#
+# Χρήση:
+#   gh workflow run probe.yml --repo chdimosthenis/feed-relay \
+#     -f url=https://www.thecaller.gr/robots.txt
+#   gh workflow run probe.yml --repo chdimosthenis/feed-relay \
+#     -f url=http://www.dimotisnews.gr/sitemap.xml -f accept=sitemap -f referer=https://dimotisnews.gr
+#
+# ⚠ ΔΥΟ ΦΟΡΕΣ ΜΕ ΑΠΟΣΤΑΣΗ ΠΡΙΝ ΓΡΑΨΕΙΣ «ΑΠΑΝΤΑ». Μετρημένο 2026-08-19: τέσσερις
+# πηγές άλλαξαν ετυμηγορία ανάμεσα σε δύο κύκλους επτά λεπτών (abort → 200).
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "Η διεύθυνση που ανοίγει, ολόκληρη, με σχήμα"
+        required: true
+        type: string
+      accept:
+        description: "Ποια κεφαλίδα Accept — ίδιες τιμές με το relay.mjs"
+        required: false
+        default: rss
+        type: choice
+        options: [rss, sitemap, wpjson, html, none]
+      referer:
+        description: "Referer, αν ο εκδότης τον απαιτεί (κενό = κανένας)"
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Άνοιξε την πόρτα από τη γραμμή του runner
+        env:
+          URL: ${{ inputs.url }}
+          ACCEPT_KIND: ${{ inputs.accept }}
+          REFERER: ${{ inputs.referer }}
+        run: |
+          set -u
+          # Οι ΙΔΙΕΣ κεφαλίδες με το relay.mjs (BROWSER_HEADERS + ACCEPT).
+          UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36'
+          case "$ACCEPT_KIND" in
+            wpjson)  ACCEPT='application/json, text/plain, */*' ;;
+            html)    ACCEPT='text/html,*/*' ;;
+            sitemap) ACCEPT='application/xml, text/xml;q=0.9, */*;q=0.8' ;;
+            none)    ACCEPT='*/*' ;;
+            *)       ACCEPT='application/rss+xml, application/xml;q=0.9, */*;q=0.8' ;;
+          esac
+
+          echo "== ΑΙΤΗΜΑ =="
+          echo "url:      $URL"
+          echo "accept:   $ACCEPT"
+          echo "referer:  ${REFERER:-<κανένας>}"
+          echo "ώρα UTC:  $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          echo "runner IP (για το μητρώο): $(curl -s --max-time 10 https://api.ipify.org || echo άγνωστη)"
+          echo
+
+          ARGS=(-sS -D headers.txt -o body.bin --max-time 30 -A "$UA"
+                -H "Accept: $ACCEPT" -H "Accept-Language: el-GR,el;q=0.9,en;q=0.8")
+          if [ -n "$REFERER" ]; then ARGS+=(-H "Referer: $REFERER"); fi
+
+          # ⚠ ΧΩΡΙΣ `-f`: θέλουμε ΤΟ ΣΩΜΑ του 403, εκεί ζει η διάγνωση
+          # («Just a moment…», «Verifying your browser…», «error code: 1016»).
+          set +e
+          curl "${ARGS[@]}" "$URL"
+          CURL_RC=$?
+          set -e
+
+          echo "== ΑΠΑΝΤΗΣΗ =="
+          echo "curl exit: $CURL_RC"
+          if [ -s headers.txt ]; then
+            echo "-- κεφαλίδες --"
+            cat headers.txt
+          else
+            echo "(καμία κεφαλίδα — δεν άνοιξε καθόλου η σύνδεση)"
+          fi
+          echo "-- μέγεθος σώματος --"
+          wc -c < body.bin || true
+          echo "-- πρώτα 400 byte --"
+          head -c 400 body.bin || true
+          echo
+          echo "== ΤΕΛΟΣ =="
