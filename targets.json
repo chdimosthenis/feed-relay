@@ -12,6 +12,18 @@
     "referer": "https://gegonota.news"
   },
   {
+    "source": "Εφημερίδα Κοζάνη",
+    "kind": "rss",
+    "url": "https://efkozani.gr/feed/",
+    "referer": "https://efkozani.gr"
+  },
+  {
+    "source": "Καλάβρυτα Press",
+    "kind": "rss",
+    "url": "https://www.kalavrytapress.gr/feed/",
+    "referer": "https://kalavrytapress.gr"
+  },
+  {
     "source": "Ο ΔΗΜΟΤΗΣ",
     "kind": "sitemap",
     "url": "http://www.dimotisnews.gr/sitemap.xml",
@@ -364,6 +376,12 @@
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Amakeleio.gr&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://www.makeleio.gr"
+  },
+  {
+    "source": "Matchnews.gr",
+    "kind": "rss",
+    "url": "https://matchnews.gr/feed/",
+    "referer": "https://matchnews.gr"
   },
   {
     "source": "MegaTV",
