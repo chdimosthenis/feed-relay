@@ -36,6 +36,12 @@
     "referer": "https://prlogos.gr"
   },
   {
+    "source": "ΤΑΧΥΔΡΟΜΟΣ ΑΡΤΑΣ",
+    "kind": "rss",
+    "url": "https://www.taxydromosartas.gr/feed/",
+    "referer": "https://taxydromosartas.gr"
+  },
+  {
     "source": "Τι Νέα Λάρισα",
     "kind": "rss",
     "url": "https://tinealarissa.gr/feed/",
