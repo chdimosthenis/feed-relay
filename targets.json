@@ -2,7 +2,7 @@
   {
     "source": "Ανεξάρτητος",
     "kind": "rss",
-    "url": "https://www.anexartitos.gr/feed/",
+    "url": "https://www.anexartitos.gr/feed",
     "referer": "https://www.anexartitos.gr"
   },
   {
@@ -476,7 +476,7 @@
   {
     "source": "PortNet",
     "kind": "rss",
-    "url": "https://www.portnet.gr/feed/",
+    "url": "https://portnet.gr/feed/",
     "referer": "https://www.portnet.gr"
   },
   {
