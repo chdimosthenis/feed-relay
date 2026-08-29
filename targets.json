@@ -1,11 +1,5 @@
 [
   {
-    "source": "Ανεξάρτητος",
-    "kind": "rss",
-    "url": "https://www.anexartitos.gr/feed/",
-    "referer": "https://www.anexartitos.gr"
-  },
-  {
     "source": "Γεγονότα",
     "kind": "rss",
     "url": "https://gegonota.news/feed/",
@@ -22,12 +16,6 @@
     "kind": "rss",
     "url": "https://www.kalavrytapress.gr/feed/",
     "referer": "https://kalavrytapress.gr"
-  },
-  {
-    "source": "Ο ΔΗΜΟΤΗΣ",
-    "kind": "sitemap",
-    "url": "http://www.dimotisnews.gr/sitemap.xml",
-    "referer": "https://dimotisnews.gr"
   },
   {
     "source": "Πρωινός Λόγος",
@@ -360,12 +348,6 @@
     "referer": "https://www.lifo.gr"
   },
   {
-    "source": "Logotypos.gr",
-    "kind": "rss",
-    "url": "https://www.logotypos.gr/feed/",
-    "referer": "https://logotypos.gr"
-  },
-  {
     "source": "MAG24",
     "kind": "rss",
     "url": "https://www.mag24.gr/feed/",
@@ -478,12 +460,6 @@
     "kind": "rss",
     "url": "https://popaganda.gr/feed/",
     "referer": "https://popaganda.gr"
-  },
-  {
-    "source": "PortNet",
-    "kind": "rss",
-    "url": "https://www.portnet.gr/feed/",
-    "referer": "https://www.portnet.gr"
   },
   {
     "source": "Pressaris",
