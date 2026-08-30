@@ -146,7 +146,7 @@
   {
     "source": "e-Thessalia",
     "kind": "rss",
-    "url": "https://www.e-thessalia.gr/feed/",
+    "url": "https://e-thessalia.gr/feed/",
     "referer": "https://www.e-thessalia.gr"
   },
   {
@@ -188,7 +188,7 @@
   {
     "source": "Eleftheros Typos",
     "kind": "sitemap",
-    "url": "https://eleftherostypos.gr/sitemap_news.xml",
+    "url": "https://www.eleftherostypos.gr/sitemap_news.xml",
     "referer": "https://www.eleftherostypos.gr"
   },
   {
@@ -332,7 +332,7 @@
   {
     "source": "Kozan.gr",
     "kind": "rss",
-    "url": "https://kozan.gr/feed/",
+    "url": "https://kozan.gr/feed",
     "referer": "https://kozan.gr"
   },
   {
@@ -458,7 +458,7 @@
   {
     "source": "Pelop",
     "kind": "rss",
-    "url": "https://www.pelop.gr/feed/",
+    "url": "https://pelop.gr/feed/",
     "referer": "https://www.pelop.gr"
   },
   {
@@ -530,7 +530,7 @@
   {
     "source": "Seleo",
     "kind": "rss",
-    "url": "https://www.seleo.gr/feed/",
+    "url": "https://seleo.gr/feed/",
     "referer": "https://www.seleo.gr"
   },
   {
@@ -554,7 +554,7 @@
   {
     "source": "Sportime",
     "kind": "rss",
-    "url": "https://sportime.gr/feed/",
+    "url": "https://sportime.gr/feed",
     "referer": "https://sportime.gr"
   },
   {
@@ -578,7 +578,7 @@
   {
     "source": "The Caller",
     "kind": "rss",
-    "url": "https://www.thecaller.gr/feed/",
+    "url": "https://thecaller.gr/feed/",
     "referer": "https://www.thecaller.gr"
   },
   {
@@ -614,7 +614,7 @@
   {
     "source": "Voicenews",
     "kind": "rss",
-    "url": "https://www.voicenews.gr/feed/",
+    "url": "https://voicenews.gr/feed/",
     "referer": "https://www.voicenews.gr"
   },
   {
