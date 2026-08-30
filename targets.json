@@ -110,7 +110,7 @@
   {
     "source": "BusinessNews",
     "kind": "rss",
-    "url": "https://www.businessnews.gr/rss.xml",
+    "url": "https://www.businessnews.gr/oles-oi-eidiseis?format=feed",
     "referer": "https://www.businessnews.gr"
   },
   {
@@ -434,7 +434,7 @@
   {
     "source": "Omega Cyprus",
     "kind": "rss",
-    "url": "https://www.omegalive.com.cy/rss",
+    "url": "https://omegalive.com.cy/feed/",
     "referer": "https://www.omegalive.com.cy"
   },
   {
