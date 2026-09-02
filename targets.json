@@ -97,8 +97,8 @@
   },
   {
     "source": "BasketNews.gr",
-    "kind": "sitemap",
-    "url": "https://www.basketnews.gr/component/osmap/?view=xml&id=1&format=xml",
+    "kind": "rss",
+    "url": "https://news.google.com/rss/search?q=site%3Abasketnews.gr&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://basketnews.gr"
   },
   {
