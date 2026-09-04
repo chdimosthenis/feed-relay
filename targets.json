@@ -42,6 +42,12 @@
     "referer": "https://tinealarissa.gr"
   },
   {
+    "source": "ΤΥΠΟΣ ΧΑΛΚΙΔΙΚΗΣ",
+    "kind": "rss",
+    "url": "https://typoshalkidikis.gr/feed/",
+    "referer": "https://typoshalkidikis.gr"
+  },
+  {
     "source": "AgrinioPress",
     "kind": "rss",
     "url": "https://www.agriniopress.gr/feed/",
@@ -586,6 +592,12 @@
     "kind": "sitemap",
     "url": "https://www.theopinion.gr/sitemap_news.xml",
     "referer": "https://theopinion.gr"
+  },
+  {
+    "source": "Thesstoday",
+    "kind": "rss",
+    "url": "https://thesstoday.gr/feed/",
+    "referer": "https://thesstoday.gr"
   },
   {
     "source": "Thestival",
