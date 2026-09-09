@@ -18,6 +18,13 @@ jobs:
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
+      # Ενας έλεγχος που δεν τρέχει δεν πιστοποιεί τίποτα. Τρέχει ΠΡΙΝ την
+      # αναμετάδοση ώστε το κόκκινο να φαίνεται στο ίδιο log, αλλά ΔΕΝ την
+      # φράζει: ο κανόνας του αναμεταδότη είναι «ποτέ δεν χάνεται άρθρο», και
+      # ένα σπασμένο τεστ δεν επιτρέπεται να κοστίσει κύκλο ύλης.
+      - name: Tests (reporting only, never gates the relay)
+        run: node --test
+        continue-on-error: true
       - name: Relay publisher payloads to the fetcher
         env:
           FETCHER_URL: ${{ secrets.FETCHER_URL }}

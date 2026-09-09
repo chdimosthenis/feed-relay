@@ -81,16 +81,74 @@ export async function resolveGoogleNewsUrl(gurl, BROWSER_HEADERS) {
   return hit ? hit[0] : null;
 }
 
+const ITEM_BLOCK = /<item\b[\s\S]*?<\/item>/gi;
+const PUBDATE = /<pubDate>([\s\S]*?)<\/pubDate>/i;
+
+/**
+ * ⛔ ΤΟ ΤΑΒΑΝΙ ΔΙΑΛΕΓΕΙ ΤΙΣ ΝΕΟΤΕΡΕΣ, ΟΧΙ ΤΙΣ ΠΡΩΤΕΣ — κανάλι 1267/1268.
+ *
+ * Το `RESOLVE_CAP` έκοβε πάνω στη ΣΕΙΡΑ ΕΓΓΡΑΦΟΥ, με το σχόλιο «η σειρά του
+ * feed είναι νεότερα πρώτα». Αυτό είναι ΥΠΟΘΕΣΗ για τον εκδότη, όχι ιδιότητα
+ * του φορτίου: κανένα σκέλος του RSS δεν την επιβάλλει, και όταν δεν ισχύει, οι
+ * τριάντα που λύνονται είναι απλώς οι τριάντα που τυπώθηκαν πρώτες. Το ζεύγος
+ * διεύθυνσης/ημερομηνίας υπάρχει ήδη μέσα στο ίδιο `<item>` — απλώς δεν το
+ * διαβάζαμε.
+ *
+ * ⚠ ΚΑΙ ΤΙ ΔΕΝ ΑΛΛΑΖΕΙ: ΠΟΙΟ άρθρο μπαίνει στη D1 το κλειδώνει ο συλλέκτης
+ * μετά την επίλυση. Εδώ κρίνεται μόνο αν το γνήσια νεότερο κρατά αδιαφανές
+ * `news.google.com` URL. Καμία διεύθυνση δεν χάνεται ποτέ — ό,τι δεν λυθεί
+ * κρατά την αρχική του μορφή, όπως και πριν.
+ *
+ * ⚠ ΚΑΙ ΤΟ ΣΚΕΛΟΣ ΤΗΣ ΟΠΙΣΘΟΔΡΟΜΗΣΗΣ: αν ΚΑΜΙΑ διεύθυνση δεν κουβαλά έγκυρη
+ * ημερομηνία, γυρίζει ΑΚΡΙΒΩΣ τη σειρά εγγράφου — δηλαδή τη σημερινή
+ * συμπεριφορά, χαρακτήρα προς χαρακτήρα. Οσες ζουν ΕΞΩ από `<item>` (atom
+ * `<link>`, περιγραφή καναλιού) δεν έχουν δική τους ημερομηνία: μπαίνουν
+ * αχρονολόγητες και πάνε τελευταίες, γιατί δεν μπορούν να αποδείξουν ότι είναι
+ * νεότερες — αλλά ΔΕΝ εξαφανίζονται από τη λίστα.
+ *
+ * Εξαγόμενη για να ελέγχεται μόνη της, χωρίς δίκτυο.
+ */
+export function aggregatorLinksNewestFirst(xml) {
+  const ts = new Map();
+  const order = [];
+  const push = (u, t) => {
+    if (!ts.has(u)) {
+      ts.set(u, t);
+      order.push(u);
+      return;
+    }
+    // Ιδια διεύθυνση σε δύο στοιχεία: κρατά τη ΝΕΟΤΕΡΗ ημερομηνία.
+    const prev = ts.get(u);
+    if (Number.isFinite(t) && (!Number.isFinite(prev) || t > prev)) ts.set(u, t);
+  };
+
+  for (const block of xml.match(ITEM_BLOCK) ?? []) {
+    const d = block.match(PUBDATE);
+    const t = d ? Date.parse(d[1].trim()) : NaN;
+    for (const u of block.match(GN_ARTICLE) ?? []) push(u, t);
+  }
+  for (const u of xml.match(GN_ARTICLE) ?? []) if (!ts.has(u)) push(u, NaN);
+
+  if (!order.some((u) => Number.isFinite(ts.get(u)))) return order;
+
+  // Σταθερή: ίδια ημερομηνία σημαίνει σειρά εγγράφου, όχι σειρά μηχανής.
+  return order
+    .map((u, i) => ({ u, i, t: Number.isFinite(ts.get(u)) ? ts.get(u) : -Infinity }))
+    .sort((a, b) => (a.t === b.t ? a.i - b.i : b.t - a.t))
+    .map((e) => e.u);
+}
+
 /** Αντικαθιστά όσες διευθύνσεις συλλέκτη λύνονται· κρατά αυτούσιες όσες όχι. */
 export async function resolveAggregatorLinks(xml, BROWSER_HEADERS) {
-  const found = xml.match(GN_ARTICLE) ?? [];
-  const all = [...new Set(found)];
+  const all = aggregatorLinksNewestFirst(xml);
   // ⛔ Η ΠΕΡΙΚΟΠΗ ΛΕΓΕΤΑΙ, ΔΕΝ ΣΙΩΠΑ. Μετρημένο: ένα ερώτημα συλλέκτη γυρίζει
   // ΕΚΑΤΟ στοιχεία, ενώ ο Worker κρατά τα πρώτα 25 (AGGREGATOR_ITEMS_PER_POST).
   // Άρα η οροφή των 30 καλύπτει ό,τι πράγματι προσγειώνεται — αλλά «30/30» σε
   // φορτίο με 102 διευθύνσεις διαβάζεται ως ΠΛΗΡΕΣ ενώ δεν είναι, και μια
   // απουσία μέτρησης δεν επιτρέπεται να διαβάζεται ως καθαρό αποτέλεσμα. Η
-  // σειρά είναι η σειρά του feed, δηλαδή νεότερα πρώτα: ίδια τα 25 που μένουν.
+  // σειρά ΔΕΝ είναι πια η σειρά του εγγράφου: είναι κατά `<pubDate>` φθίνουσα,
+  // ώστε τα 30 να είναι τα ΝΕΟΤΕΡΑ και όχι τα πρώτα που τυπώθηκαν. Δες
+  // `aggregatorLinksNewestFirst` από πάνω για το γιατί και για την οπισθοδρόμηση.
   const uniq = all.slice(0, RESOLVE_CAP);
   const dropped = all.length - uniq.length;
   if (uniq.length === 0) return { xml, total: 0, resolved: 0, dropped: 0 };
