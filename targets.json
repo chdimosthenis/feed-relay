@@ -12,6 +12,12 @@
     "referer": "https://gegonota.news"
   },
   {
+    "source": "Ελευθερία Καλαμάτας",
+    "kind": "sitemap",
+    "url": "https://eleftheriaonline.gr/component/jmap/sitemap/gnews?format=gnews",
+    "referer": "https://eleftheriaonline.gr"
+  },
+  {
     "source": "Εφημερίδα Κοζάνη",
     "kind": "rss",
     "url": "https://efkozani.gr/feed/",
