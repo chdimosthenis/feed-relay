@@ -282,6 +282,12 @@
     "referer": "https://www.iatronet.gr"
   },
   {
+    "source": "iGrevena",
+    "kind": "rss",
+    "url": "https://igrevena.gr/feed/",
+    "referer": "https://igrevena.gr"
+  },
+  {
     "source": "Ilia Live",
     "kind": "sitemap",
     "url": "https://www.ilialive.gr/sitemap_news.xml",
@@ -396,6 +402,12 @@
     "referer": "https://matchnews.gr"
   },
   {
+    "source": "Media News",
+    "kind": "rss",
+    "url": "https://www.media-news.gr/feed/",
+    "referer": "https://media-news.gr"
+  },
+  {
     "source": "MegaTV",
     "kind": "rss",
     "url": "https://www.megatv.com/feed/",
@@ -424,6 +436,12 @@
     "kind": "rss",
     "url": "https://www.naftikachronika.gr/feed/",
     "referer": "https://www.naftikachronika.gr"
+  },
+  {
+    "source": "naxostimes.gr",
+    "kind": "rss",
+    "url": "https://naxostimes.gr/feed/",
+    "referer": "https://naxostimes.gr"
   },
   {
     "source": "Newmoney",
@@ -652,6 +670,12 @@
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Aworldenergynews.gr&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://worldenergynews.gr"
+  },
+  {
+    "source": "Xalkidiki Politiki",
+    "kind": "rss",
+    "url": "https://www.xalkidikipolitiki.com/feed/",
+    "referer": "https://xalkidikipolitiki.com"
   },
   {
     "source": "YouWeekly",
