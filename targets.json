@@ -306,12 +306,6 @@
     "referer": "https://www.in.gr"
   },
   {
-    "source": "InfoKids",
-    "kind": "sitemap",
-    "url": "https://www.infokids.gr/news-sitemap.xml",
-    "referer": "https://www.infokids.gr"
-  },
-  {
     "source": "Insider.gr",
     "kind": "rss",
     "url": "https://www.insider.gr/rss",
