@@ -228,6 +228,12 @@
     "referer": "https://flamis.gr"
   },
   {
+    "source": "FPress",
+    "kind": "rss",
+    "url": "https://www.fpress.gr/feed/",
+    "referer": "https://www.fpress.gr"
+  },
+  {
     "source": "Gavros",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Agavros.gr&hl=el&gl=GR&ceid=GR:el",
