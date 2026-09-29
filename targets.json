@@ -180,12 +180,6 @@
     "referer": "https://ecopress.gr"
   },
   {
-    "source": "Eduguide",
-    "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Aeduguide.gr&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://www.eduguide.gr"
-  },
-  {
     "source": "Efsyn",
     "kind": "rss",
     "url": "https://www.efsyn.gr/feed/",
