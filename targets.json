@@ -480,6 +480,12 @@
     "referer": "https://paideia-news.com"
   },
   {
+    "source": "Patrida TV",
+    "kind": "rss",
+    "url": "https://tvpatrida.gr/feed/",
+    "referer": "https://tvpatrida.gr"
+  },
+  {
     "source": "Pelop",
     "kind": "rss",
     "url": "https://pelop.gr/feed/",
