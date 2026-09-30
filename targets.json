@@ -174,12 +174,6 @@
     "referer": "https://economytoday.sigmalive.com"
   },
   {
-    "source": "ecopress",
-    "kind": "rss",
-    "url": "https://ecopress.gr/feed/",
-    "referer": "https://ecopress.gr"
-  },
-  {
     "source": "Efsyn",
     "kind": "rss",
     "url": "https://www.efsyn.gr/feed/",
