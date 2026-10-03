@@ -37,8 +37,8 @@
   },
   {
     "source": "ΤΑΧΥΔΡΟΜΟΣ ΑΡΤΑΣ",
-    "kind": "rss",
-    "url": "https://www.taxydromosartas.gr/feed/",
+    "kind": "wpjson",
+    "url": "https://taxydromosartas.gr/wp-json/wp/v2/posts?per_page=20&_embed=wp:featuredmedia&_fields=id,date,date_gmt,title,link,excerpt,content,_embedded",
     "referer": "https://taxydromosartas.gr"
   },
   {
