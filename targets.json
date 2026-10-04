@@ -108,6 +108,12 @@
     "referer": "https://axianews.gr"
   },
   {
+    "source": "Baby on Board",
+    "kind": "rss",
+    "url": "https://babyonboardmag.gr/feed/",
+    "referer": "https://babyonboardmag.gr"
+  },
+  {
     "source": "BasketNews.gr",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Abasketnews.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
@@ -318,6 +324,12 @@
     "referer": "https://www.ipaideia.gr"
   },
   {
+    "source": "Kalavrita Live",
+    "kind": "rss",
+    "url": "https://kalavritalive.gr/sitemap.rss",
+    "referer": "https://kalavritalive.gr"
+  },
+  {
     "source": "Karfitsa",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Akarfitsa.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
@@ -334,6 +346,12 @@
     "kind": "rss",
     "url": "https://kozan.gr/feed",
     "referer": "https://kozan.gr"
+  },
+  {
+    "source": "Kozani Press",
+    "kind": "rss",
+    "url": "https://kozanipress.gr/sitemap.rss",
+    "referer": "https://kozanipress.gr"
   },
   {
     "source": "Ladylike",
