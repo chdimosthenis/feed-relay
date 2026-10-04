@@ -112,7 +112,12 @@ async function fetchPayload(t) {
  * an `rss` document for a source whose primary surface is a sitemap. */
 function aggregatorUrl(referer) {
   const host = new URL(referer).hostname.replace(/^www\./, "");
-  const q = encodeURIComponent(`site:${host}`);
+  // when:1d: without it Google answers 100 items ranked by RELEVANCE, mostly
+  // old, and the newest articles are not among them (measured 2026-10-04 on
+  // 23 fallback sources: 456 -> 783 articles of the last 48h in the answer).
+  // The consuming application builds the same query in one helper
+  // (lib/google-news-query.ts); a change there needs this line too.
+  const q = encodeURIComponent(`site:${host} when:1d`);
   return `https://news.google.com/rss/search?q=${q}&hl=el&gl=GR&ceid=GR:el`;
 }
 

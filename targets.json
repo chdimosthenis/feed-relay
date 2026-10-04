@@ -62,7 +62,7 @@
   {
     "source": "Agrotypos",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Aagrotypos.gr&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://news.google.com/rss/search?q=site%3Aagrotypos.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://agrotypos.gr"
   },
   {
@@ -74,13 +74,13 @@
   {
     "source": "ANT1 News",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Aant1news.gr&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://news.google.com/rss/search?q=site%3Aant1news.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://www.ant1news.gr"
   },
   {
     "source": "APE-MPE",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Aamna.gr&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://news.google.com/rss/search?q=site%3Aamna.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://www.amna.gr"
   },
   {
@@ -92,31 +92,31 @@
   {
     "source": "Athinorama",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Aathinorama.gr&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://news.google.com/rss/search?q=site%3Aathinorama.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://www.athinorama.gr"
   },
   {
     "source": "Autotriti",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Aautotriti.gr&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://news.google.com/rss/search?q=site%3Aautotriti.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://autotriti.gr"
   },
   {
     "source": "Axianews",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Aaxianews.gr&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://news.google.com/rss/search?q=site%3Aaxianews.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://axianews.gr"
   },
   {
     "source": "BasketNews.gr",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Abasketnews.gr&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://news.google.com/rss/search?q=site%3Abasketnews.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://basketnews.gr"
   },
   {
     "source": "BookPress",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Abookpress.gr&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://news.google.com/rss/search?q=site%3Abookpress.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://bookpress.gr"
   },
   {
@@ -170,7 +170,7 @@
   {
     "source": "Economy Today",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Aeconomytoday.sigmalive.com&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://news.google.com/rss/search?q=site%3Aeconomytoday.sigmalive.com%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://economytoday.sigmalive.com"
   },
   {
@@ -200,7 +200,7 @@
   {
     "source": "Energypress",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Aenergypress.gr&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://news.google.com/rss/search?q=site%3Aenergypress.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://energypress.gr"
   },
   {
@@ -224,7 +224,7 @@
   {
     "source": "Gavros",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Agavros.gr&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://news.google.com/rss/search?q=site%3Agavros.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://gavros.gr"
   },
   {
@@ -266,7 +266,7 @@
   {
     "source": "iatronet",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Aiatronet.gr&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://news.google.com/rss/search?q=site%3Aiatronet.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://www.iatronet.gr"
   },
   {
@@ -302,7 +302,7 @@
   {
     "source": "Insomnia",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Ainsomnia.gr&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://news.google.com/rss/search?q=site%3Ainsomnia.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://insomnia.gr"
   },
   {
@@ -320,13 +320,13 @@
   {
     "source": "Karfitsa",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Akarfitsa.gr&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://news.google.com/rss/search?q=site%3Akarfitsa.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://www.karfitsa.gr"
   },
   {
     "source": "Kathimerini Cyprus",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Akathimerini.com.cy&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://news.google.com/rss/search?q=site%3Akathimerini.com.cy%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://www.kathimerini.com.cy"
   },
   {
@@ -374,7 +374,7 @@
   {
     "source": "Makeleio",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Amakeleio.gr&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://news.google.com/rss/search?q=site%3Amakeleio.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://www.makeleio.gr"
   },
   {
@@ -542,7 +542,7 @@
   {
     "source": "Reporter Cyprus",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Areporter.com.cy&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://news.google.com/rss/search?q=site%3Areporter.com.cy%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://www.reporter.com.cy"
   },
   {
@@ -566,7 +566,7 @@
   {
     "source": "Sportdog",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Asportdog.gr&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://news.google.com/rss/search?q=site%3Asportdog.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://www.sportdog.gr"
   },
   {
@@ -578,13 +578,13 @@
   {
     "source": "Stockwatch",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Astockwatch.com.cy&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://news.google.com/rss/search?q=site%3Astockwatch.com.cy%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://www.stockwatch.com.cy"
   },
   {
     "source": "Taxheaven",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Ataxheaven.gr&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://news.google.com/rss/search?q=site%3Ataxheaven.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://taxheaven.gr"
   },
   {
@@ -650,13 +650,13 @@
   {
     "source": "WomenOnly",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Awomenonly.skai.gr&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://news.google.com/rss/search?q=site%3Awomenonly.skai.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://womenonly.skai.gr"
   },
   {
     "source": "WorldEnergyNews",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Aworldenergynews.gr&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://news.google.com/rss/search?q=site%3Aworldenergynews.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://worldenergynews.gr"
   },
   {
