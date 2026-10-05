@@ -41,7 +41,20 @@ const FETCH_TIMEOUT_MS = 20_000;
 // The fetcher's guard is 2 MiB. Truncate oversized HTML (cheerio parses a
 // truncated homepage fine — the top cards survive); never truncate JSON,
 // and never truncate XML (a half-closed document parses to nothing).
-import { resolveAggregatorLinks } from "./resolve-google.mjs";
+import {
+  resolveAggregatorLinks,
+  resolveGoogleNewsUrl,
+  RESOLVE_CONCURRENCY,
+} from "./resolve-google.mjs";
+import {
+  dayOf,
+  isGoogleNewsPrimary,
+  loadMemo,
+  markRefused,
+  newRunContext,
+  resolvePrimaryLinks,
+  saveMemo,
+} from "./link-memo.mjs";
 
 const MAX_PAYLOAD = 1_900_000;
 
@@ -50,6 +63,22 @@ const BROWSER_HEADERS = {
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36",
   "Accept-Language": "el-GR,el;q=0.9,en;q=0.8",
 };
+
+/** ⛔ ΤΟ ΤΑΒΑΝΙ ΤΟΥ 3236: αναλύσεις ανά run για τους κύριους στόχους Google
+ * News, ΟΛΟΙ μαζί. Κάθε ανάλυση είναι το πολύ δύο αιτήματα (σελίδα και
+ * batchexecute), άρα 100 σημαίνει ≤200 αιτήματα. Μετρημένο 5/10: ≈863 νέα άρθρα
+ * την ημέρα στους 23, ≈28 ανά run· το 100 χωρά τις αιχμές της ημέρας. Η εφεδρική
+ * ΔΕΝ μετρά εδώ: έχει το δικό της `RESOLVE_CAP` ανά στόχο, όπως πριν.
+ * Τιμή που δεν διαβάζεται ως αριθμός ≥ 0 δίνει 0, όχι άπειρο. */
+const capRaw = Number(process.env.GN_PRIMARY_RESOLVE_CAP ?? 100);
+const GN_PRIMARY_RESOLVE_CAP =
+  Number.isFinite(capRaw) && capRaw >= 0 ? Math.floor(capRaw) : 0;
+const GN_LINKS_FILE = process.env.GN_LINKS_FILE ?? "gn-links.json";
+
+const today = dayOf(Date.now());
+const { memo, found: memoFound } = loadMemo(GN_LINKS_FILE);
+const memoLoaded = Object.values(memo.t).reduce((s, e) => s + Object.keys(e).length, 0);
+const gn = newRunContext(GN_PRIMARY_RESOLVE_CAP);
 
 const ACCEPT = {
   wpjson: "application/json, text/plain, */*",
@@ -201,6 +230,9 @@ async function relayOne(t) {
     if (t.kind !== "rss" && t.kind !== "sitemap") throw e;
     refusalStatus = typeof e.status === "number" ? e.status : null;
     refusalMessage = e.snippet || e.message || null;
+    // Το Google αρνήθηκε το ΙΔΙΟ το ερώτημα ενός κύριου στόχου: στάση και εδώ.
+    if (isGoogleNewsPrimary(t) && (refusalStatus === 429 || refusalStatus === 503))
+      markRefused(gn);
     // Η ΑΠΟΦΑΣΗ ΕΙΝΑΙ ΤΟΥ WORKER. Δες askRouting παραπάνω.
     const routing = await askRouting(t.source, refusalStatus, refusalMessage);
     if (routing.then !== "aggregator") {
@@ -217,17 +249,54 @@ async function relayOne(t) {
     viaFallback = true;
     // ⛔ Η ΑΝΑΛΥΣΗ ΓΙΝΕΤΑΙ ΕΔΩ, ΠΡΙΝ ΦΥΓΕΙ ΤΟ ΦΟΡΤΙΟ. Απόφαση του χειριστή
     // 2026-08-18: «βαλε αναλυση διευθυνσης, οχι απορριψη».
+    // Ένας κύριος στόχος Google News περνά ΠΑΝΤΑ από τη μνήμη, και στην
+    // εφεδρική: αλλιώς ό,τι κράτησε τον σύνδεσμο του Google θα αναλυόταν εδώ
+    // και θα έμπαινε δεύτερη φορά.
+    if (!isGoogleNewsPrimary(t)) {
+      try {
+        const r = await resolveAggregatorLinks(payload, BROWSER_HEADERS, () =>
+          markRefused(gn),
+        );
+        payload = r.xml;
+        // ⚠ ΛΕΓΕΤΑΙ ΔΥΝΑΤΑ, ΚΑΙ ΤΟ ΝΟΥΜΕΡΟ ΕΙΝΑΙ ΚΛΑΣΜΑ. Μια σιωπηλή πτώση στο
+        // 0/25 σημαίνει ότι το Google άλλαξε σελίδα, και είναι η μόνη ένδειξη
+        // που θα υπάρξει — δεν σπάει τίποτα, απλώς σταματά να διορθώνει.
+        resolvedNote =
+          `, διευθύνσεις ${r.resolved}/${r.total}` +
+          (r.dropped > 0 ? ` (+${r.dropped} πάνω από την οροφή, ΑΜΕΤΡΗΤΕΣ)` : "") +
+          (r.refused > 0 ? `, άρνηση Google ×${r.refused}` : "");
+      } catch {
+        resolvedNote = ", ανάλυση ΑΠΕΤΥΧΕ";
+      }
+    }
+  }
+  if (isGoogleNewsPrimary(t)) {
+    // ⛔ 3236: διεύθυνση εκδότη για τα ΝΕΑ άρθρα, με ταβάνι και στάση στην
+    // άρνηση. Δες link-memo.mjs για το γιατί χρειάζεται μνήμη. Αν κάτι εδώ
+    // σπάσει, το φορτίο φεύγει αυτούσιο: ποτέ δεν χάνεται κύκλος ύλης.
     try {
-      const r = await resolveAggregatorLinks(payload, BROWSER_HEADERS);
+      const r = await resolvePrimaryLinks({
+        source: t.source,
+        xml: payload,
+        memo,
+        ctx: gn,
+        today,
+        resolve: (link) => resolveGoogleNewsUrl(link, BROWSER_HEADERS),
+        concurrency: RESOLVE_CONCURRENCY,
+      });
       payload = r.xml;
-      // ⚠ ΛΕΓΕΤΑΙ ΔΥΝΑΤΑ, ΚΑΙ ΤΟ ΝΟΥΜΕΡΟ ΕΙΝΑΙ ΚΛΑΣΜΑ. Μια σιωπηλή πτώση στο
-      // 0/25 σημαίνει ότι το Google άλλαξε σελίδα, και είναι η μόνη ένδειξη
-      // που θα υπάρξει — δεν σπάει τίποτα, απλώς σταματά να διορθώνει.
-      resolvedNote =
-        `, διευθύνσεις ${r.resolved}/${r.total}` +
-        (r.dropped > 0 ? ` (+${r.dropped} πάνω από την οροφή, ΑΜΕΤΡΗΤΕΣ)` : "");
-    } catch {
-      resolvedNote = ", ανάλυση ΑΠΕΤΥΧΕ";
+      const why = [
+        r.failures > 0 ? `${r.failures} αποτυχία` : "",
+        r.refused > 0 ? `${r.refused} άρνηση` : "",
+        r.notTried > 0 ? `${r.notTried} ${gn.refused ? "μετά τη στάση" : "πάνω από το ταβάνι"}` : "",
+      ].filter(Boolean);
+      resolvedNote = r.cold
+        ? `, μνήμη: πρώτη φορά, ${r.recorded} μένουν Google`
+        : `, διευθύνσεις ${r.resolved}/${r.fresh} νέες` +
+          (why.length ? ` (μένουν Google: ${why.join(", ")})` : "") +
+          (r.reused > 0 ? `, ${r.reused} από τη μνήμη` : "");
+    } catch (e) {
+      resolvedNote = `, ανάλυση ΑΠΕΤΥΧΕ (${e.message})`;
     }
   }
   const post = await fetch(`${FETCHER_URL}/ingest-external`, {
@@ -290,6 +359,25 @@ console.log(
 if (fallbacks.length > 0) {
   console.log(`  aggregator-substituted: ${fallbacks.join(", ")}`);
 }
+
+// Η μνήμη γράφεται ΠΡΙΝ από το κόκκινο έξοδο: λέει με ποια διεύθυνση έφυγε κάθε
+// άρθρο, και αυτό ισχύει είτε το run πέτυχε είτε όχι.
+let memoNote;
+try {
+  const s = saveMemo(GN_LINKS_FILE, memo, today);
+  memoNote = `γράφτηκαν ${s.kept} σε ${Object.keys(memo.t).length} στόχους (σβήστηκαν ${s.pruned})`;
+} catch (e) {
+  memoNote = `ΔΕΝ ΓΡΑΦΤΗΚΕ: ${e.message}`;
+}
+console.log(
+  `Google News κύριοι στόχοι: νέες ${gn.fresh} · αναλύθηκαν ${gn.resolved} · ` +
+    `μένουν Google ${gn.fresh - gn.resolved} (ταβάνι ${gn.keptCap}, άρνηση ${gn.keptRefused}, αποτυχία ${gn.failures}) · ` +
+    `αναλύσεις ${gn.calls}/${GN_PRIMARY_RESOLVE_CAP} (≤${2 * gn.calls} αιτήματα) · ` +
+    `στάση 429/503: ${gn.refused ? `ΝΑΙ ${gn.refusedAt}Z` : "όχι"}`,
+);
+console.log(
+  `μνήμη συνδέσμων: ${memoFound ? `φορτώθηκαν ${memoLoaded}` : "ΔΕΝ ΒΡΕΘΗΚΕ (πρώτο run: κάθε στόχος «πρώτη φορά»)"} · ${memoNote}`,
+);
 // Red run only when NOTHING got through — individual publisher hiccups are
 // routine at this roster size and self-heal on the next half-hour fire.
 if (ok === 0) process.exit(1);

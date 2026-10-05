@@ -33,7 +33,45 @@ const GN_ARTICLE = /https?:\/\/news\.google\.com\/rss\/articles\/[A-Za-z0-9_-]+(
 const RESOLVE_CAP = 30;
 /** Πόσες παράλληλα. Τέσσερις: αρκετά για να μη διαρκεί λεπτά, λίγα για να μη
  * μοιάζει με επίθεση σε endpoint που δεν είναι δημόσιο συμβόλαιο. */
-const RESOLVE_CONCURRENCY = 4;
+export const RESOLVE_CONCURRENCY = 4;
+
+/** ⛔ Η ΑΡΝΗΣΗ ΤΟΥ GOOGLE ΔΕΝ ΕΙΝΑΙ null (κανάλι 3236, «στάση στο 429»). Ένα
+ * null λέει «αυτό το άρθρο δεν λύθηκε, πήγαινε στο επόμενο»· μια άρνηση λέει
+ * «σταμάτα να ρωτάς». Το 503 μετρά επίσης: είναι η σελίδα «Sorry…» που το
+ * Google έδωσε για τον ίδιο λόγο στον Worker στις 18/8. */
+const REFUSAL_STATUS = new Set([429, 503]);
+function refusal(status) {
+  const e = new Error(`Google HTTP ${status}`);
+  e.refused = true;
+  e.status = status;
+  return e;
+}
+
+/**
+ * ⛔ Η ΑΠΑΝΤΗΣΗ ΔΙΑΒΑΖΕΤΑΙ ΩΣ JSON, ΟΧΙ ΜΕ REGEX ΠΑΝΩ ΣΤΟ ΚΕΙΜΕΝΟ (5/10).
+ * Η διεύθυνση έρχεται ΔΙΠΛΑ κωδικοποιημένη (JSON μέσα σε συμβολοσειρά JSON), και
+ * το Google γράφει το «=» ως `\u003d` και το «&» ως `\u0026`. Η regex σταματά
+ * στο πρώτο «\», άρα κάθε διεύθυνση με ερώτημα κοβόταν. Μετρημένα στη D1:
+ * «…generate-post-pdf.php?id» (Metafores Press), «…?query-b1700bfd-page»
+ * (Thesstoday). Δύο άρθρα κομμένα στην ίδια διεύθυνση γίνονται ΕΝΑ για τον
+ * Worker: το δεύτερο κρίνεται «γνωστό» και δεν μπαίνει ποτέ. Η regex μένει μόνο
+ * ως εφεδρεία, αν η μορφή αλλάξει: τότε η συμπεριφορά είναι η παλιά.
+ */
+export function garturlFrom(txt) {
+  try {
+    const outer = JSON.parse(txt.slice(txt.indexOf("[")));
+    for (const row of outer) {
+      if (!Array.isArray(row) || row[0] !== "wrb.fr" || typeof row[2] !== "string") continue;
+      const inner = JSON.parse(row[2]);
+      const u = Array.isArray(inner) && inner[0] === "garturlres" ? inner[1] : null;
+      if (typeof u === "string" && /^https?:\/\/(?!news\.google|www\.google)/.test(u)) return u;
+    }
+  } catch {
+    // άλλη μορφή: η παλιά ανάγνωση από κάτω
+  }
+  const hit = txt.match(/https?:\/\/(?!news\.google|www\.google)[^"\\]{10,400}/);
+  return hit ? hit[0] : null;
+}
 
 export async function resolveGoogleNewsUrl(gurl, BROWSER_HEADERS) {
   const page = await fetch(gurl, {
@@ -41,6 +79,7 @@ export async function resolveGoogleNewsUrl(gurl, BROWSER_HEADERS) {
     redirect: "follow",
     signal: AbortSignal.timeout(20_000),
   });
+  if (REFUSAL_STATUS.has(page.status)) throw refusal(page.status);
   if (!page.ok) return null;
   const body = await page.text();
   const sg = body.match(/data-n-a-sg="([^"]+)"/);
@@ -75,10 +114,9 @@ export async function resolveGoogleNewsUrl(gurl, BROWSER_HEADERS) {
     body: "f.req=" + encodeURIComponent(req),
     signal: AbortSignal.timeout(20_000),
   });
+  if (REFUSAL_STATUS.has(rpc.status)) throw refusal(rpc.status);
   if (!rpc.ok) return null;
-  const txt = await rpc.text();
-  const hit = txt.match(/https?:\/\/(?!news\.google|www\.google)[^"\\]{10,400}/);
-  return hit ? hit[0] : null;
+  return garturlFrom(await rpc.text());
 }
 
 const ITEM_BLOCK = /<item\b[\s\S]*?<\/item>/gi;
@@ -138,8 +176,14 @@ export function aggregatorLinksNewestFirst(xml) {
     .map((e) => e.u);
 }
 
-/** Αντικαθιστά όσες διευθύνσεις συλλέκτη λύνονται· κρατά αυτούσιες όσες όχι. */
-export async function resolveAggregatorLinks(xml, BROWSER_HEADERS) {
+/** Αντικαθιστά όσες διευθύνσεις συλλέκτη λύνονται· κρατά αυτούσιες όσες όχι.
+ *
+ * ⚠ Η ΕΦΕΔΡΙΚΗ ΔΕΝ ΣΤΑΜΑΤΑ ΣΤΗΝ ΑΡΝΗΣΗ, ΚΑΙ ΕΙΝΑΙ ΣΚΟΠΙΜΟ (3236 αφορά μόνο τους
+ * κύριους στόχους). Εδώ τα ίδια άρθρα ξαναλύνονται σε κάθε run χωρίς μνήμη, άρα
+ * ένα άρθρο που δεν ρωτήθηκε θα άλλαζε διεύθυνση και θα έμπαινε δεύτερη φορά. Η
+ * άρνηση μόνο μετριέται και περνά στο `onRefused`, ώστε να σταματήσουν οι
+ * αναλύσεις των κύριων στόχων (`link-memo.mjs`). */
+export async function resolveAggregatorLinks(xml, BROWSER_HEADERS, onRefused = () => {}) {
   const all = aggregatorLinksNewestFirst(xml);
   // ⛔ Η ΠΕΡΙΚΟΠΗ ΛΕΓΕΤΑΙ, ΔΕΝ ΣΙΩΠΑ. Μετρημένο: ένα ερώτημα συλλέκτη γυρίζει
   // ΕΚΑΤΟ στοιχεία, ενώ ο Worker κρατά τα πρώτα 25 (AGGREGATOR_ITEMS_PER_POST).
@@ -151,9 +195,10 @@ export async function resolveAggregatorLinks(xml, BROWSER_HEADERS) {
   // `aggregatorLinksNewestFirst` από πάνω για το γιατί και για την οπισθοδρόμηση.
   const uniq = all.slice(0, RESOLVE_CAP);
   const dropped = all.length - uniq.length;
-  if (uniq.length === 0) return { xml, total: 0, resolved: 0, dropped: 0 };
+  if (uniq.length === 0) return { xml, total: 0, resolved: 0, dropped: 0, refused: 0 };
   const map = new Map();
   const queue = [...uniq];
+  let refused = 0;
   await Promise.all(
     Array.from({ length: Math.min(RESOLVE_CONCURRENCY, queue.length) }, async () => {
       for (;;) {
@@ -162,15 +207,19 @@ export async function resolveAggregatorLinks(xml, BROWSER_HEADERS) {
         try {
           const real = await resolveGoogleNewsUrl(g, BROWSER_HEADERS);
           if (real) map.set(g, real);
-        } catch {
-          // σιωπηλά: κρατά την αρχική
+        } catch (e) {
+          // κρατά την αρχική· μόνο η άρνηση μετριέται
+          if (e && e.refused) {
+            refused++;
+            onRefused();
+          }
         }
       }
     }),
   );
   let out = xml;
   for (const [g, real] of map) out = out.split(g).join(escapeXml(real));
-  return { xml: out, total: uniq.length, resolved: map.size, dropped };
+  return { xml: out, total: uniq.length, resolved: map.size, dropped, refused };
 }
 
 function escapeXml(u) {

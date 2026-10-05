@@ -18,6 +18,20 @@ jobs:
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
+      # ⛔ Η ΜΝΗΜΗ ΣΥΝΔΕΣΜΩΝ ΤΩΝ ΚΥΡΙΩΝ ΣΤΟΧΩΝ GOOGLE NEWS (link-memo.mjs, κανάλι
+      # 3236): με ποια διεύθυνση έφυγε κάθε άρθρο, ώστε να μην αλλάξει ποτέ. Το
+      # νεότερο αντίγραφο, από όποιο run το έγραψε τελευταίο. Αν λείπει, το run
+      # είναι «πρώτη φορά» για όλους: κανένα αίτημα, όλα κρατούν το Google.
+      # ⚠ Οι δύο ομάδες ταυτοχρονισμού (schedule, dispatch) ΜΕΝΟΥΝ χωριστές (δες
+      # c5f31f0): δύο runs που επικαλύπτονται δίνουν την ίδια διεύθυνση εκδότη,
+      # και όπου διαφωνήσουν πρόκειται για νέα άρθρα, που τα πιάνει ο έλεγχος
+      # τίτλου 6 ωρών του Worker.
+      - name: Restore the Google News link memory
+        uses: actions/cache/restore@v4
+        with:
+          path: gn-links.json
+          key: gn-links-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: gn-links-
       # Ενας έλεγχος που δεν τρέχει δεν πιστοποιεί τίποτα. Τρέχει ΠΡΙΝ την
       # αναμετάδοση ώστε το κόκκινο να φαίνεται στο ίδιο log, αλλά ΔΕΝ την
       # φράζει: ο κανόνας του αναμεταδότη είναι «ποτέ δεν χάνεται άρθρο», και
@@ -29,4 +43,16 @@ jobs:
         env:
           FETCHER_URL: ${{ secrets.FETCHER_URL }}
           FETCHER_SECRET: ${{ secrets.FETCHER_SECRET }}
+          # Αναλύσεις ανά run για ΟΛΟΥΣ τους κύριους στόχους μαζί, δύο αιτήματα
+          # προς το Google η καθεμία. "0" είναι η ήπια επαναφορά: κανένα νέο
+          # αίτημα, και η μνήμη κρατά τη διεύθυνση όσων έφυγαν ήδη.
+          GN_PRIMARY_RESOLVE_CAP: "100"
         run: node relay.mjs
+      # Γράφεται ΚΑΙ όταν το run κοκκινίσει: η μνήμη λέει με ποια διεύθυνση έφυγε
+      # κάθε άρθρο, και αυτό ισχύει είτε η αποστολή πέτυχε είτε όχι.
+      - name: Save the Google News link memory
+        if: always() && hashFiles('gn-links.json') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: gn-links.json
+          key: gn-links-${{ github.run_id }}-${{ github.run_attempt }}
