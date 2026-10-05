@@ -375,6 +375,13 @@
     "referer": "https://www.ladylike.gr"
   },
   {
+    "source": "LamiaFM1",
+    "kind": "rss",
+    "url": "https://news.google.com/rss/search?q=site%3Alamiafm1.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
+    "referer": "https://lamiafm1.gr",
+    "wideUrl": "https://news.google.com/rss/search?q=site%3Alamiafm1.gr%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
+  },
+  {
     "source": "Larissanet",
     "kind": "rss",
     "url": "https://www.larissanet.gr/feed/",
