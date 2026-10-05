@@ -184,6 +184,24 @@ async function askRouting(source, refusalStatus, refusalMessage) {
   }
 }
 
+/** ⛔ 3266: ποιοι σύνδεσμοι Google News υπάρχουν ήδη στη D1. Πετά σφάλμα αν ο
+ * Worker δεν απαντήσει· τότε δεν αναλύεται τίποτα (δες link-memo.mjs). */
+async function knownLinks(links) {
+  const res = await fetch(`${FETCHER_URL}/known-urls`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${FETCHER_SECRET}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ urls: links }),
+    signal: AbortSignal.timeout(10_000),
+  });
+  if (!res.ok) throw new Error(`known-urls HTTP ${res.status}`);
+  const j = await res.json();
+  if (!Array.isArray(j?.known)) throw new Error("known-urls: άκυρη απάντηση");
+  return new Set(j.known);
+}
+
 
 /** Google News answers by relevance, up to 100 items, inside whatever window
  * it is given. A small publisher asked for one day answers an EMPTY channel on
@@ -282,6 +300,7 @@ async function relayOne(t) {
         ctx: gn,
         today,
         resolve: (link) => resolveGoogleNewsUrl(link, BROWSER_HEADERS),
+        known: knownLinks,
         concurrency: RESOLVE_CONCURRENCY,
       });
       payload = r.xml;
@@ -290,11 +309,13 @@ async function relayOne(t) {
         r.refused > 0 ? `${r.refused} άρνηση` : "",
         r.notTried > 0 ? `${r.notTried} ${gn.refused ? "μετά τη στάση" : "πάνω από το ταβάνι"}` : "",
       ].filter(Boolean);
-      resolvedNote = r.cold
-        ? `, μνήμη: πρώτη φορά, ${r.recorded} μένουν Google`
+      resolvedNote = r.checkFailed
+        ? ", έλεγχος D1 ΑΠΕΤΥΧΕ: καμία ανάλυση, όλα όπως ήρθαν"
         : `, διευθύνσεις ${r.resolved}/${r.fresh} νέες` +
           (why.length ? ` (μένουν Google: ${why.join(", ")})` : "") +
-          (r.reused > 0 ? `, ${r.reused} από τη μνήμη` : "");
+          (r.stored > 0 ? `, ${r.stored} ήδη στη D1` : "") +
+          (r.reused > 0 ? `, ${r.reused} από τη μνήμη` : "") +
+          (r.cold ? ", πρώτη φορά στη μνήμη" : "");
     } catch (e) {
       resolvedNote = `, ανάλυση ΑΠΕΤΥΧΕ (${e.message})`;
     }
@@ -372,11 +393,13 @@ try {
 console.log(
   `Google News κύριοι στόχοι: νέες ${gn.fresh} · αναλύθηκαν ${gn.resolved} · ` +
     `μένουν Google ${gn.fresh - gn.resolved} (ταβάνι ${gn.keptCap}, άρνηση ${gn.keptRefused}, αποτυχία ${gn.failures}) · ` +
-    `αναλύσεις ${gn.calls}/${GN_PRIMARY_RESOLVE_CAP} (≤${2 * gn.calls} αιτήματα) · ` +
+    `ήδη στη D1 ${gn.stored}` +
+    (gn.checkFailed > 0 ? ` · έλεγχος D1 ΑΠΕΤΥΧΕ σε ${gn.checkFailed} στόχους` : "") +
+    ` · αναλύσεις ${gn.calls}/${GN_PRIMARY_RESOLVE_CAP} (≤${2 * gn.calls} αιτήματα) · ` +
     `στάση 429/503: ${gn.refused ? `ΝΑΙ ${gn.refusedAt}Z` : "όχι"}`,
 );
 console.log(
-  `μνήμη συνδέσμων: ${memoFound ? `φορτώθηκαν ${memoLoaded}` : "ΔΕΝ ΒΡΕΘΗΚΕ (πρώτο run: κάθε στόχος «πρώτη φορά»)"} · ${memoNote}`,
+  `μνήμη συνδέσμων: ${memoFound ? `φορτώθηκαν ${memoLoaded}` : "ΔΕΝ ΒΡΕΘΗΚΕ (κρίνει η D1)"} · ${memoNote}`,
 );
 // Red run only when NOTHING got through — individual publisher hiccups are
 // routine at this roster size and self-heal on the next half-hour fire.

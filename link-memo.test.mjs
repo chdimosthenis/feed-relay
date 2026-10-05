@@ -1,12 +1,13 @@
 // Τρέχει χωρίς καμία εξάρτηση:  node --test
 //
-// ⛔ ΚΑΝΕΝΑ ΑΙΤΗΜΑ ΠΡΟΣ ΤΟ GOOGLE ΑΠΟ ΕΔΩ. Η ανάλυση τρέχει ΜΟΝΟ στους runners
-// του GitHub (κανάλι 2523: ποτέ από τον υπολογιστή του χειριστή). Ο αναλυτής
-// είναι ψεύτικος και το `fetch` αντικαθίσταται.
+// ⛔ ΚΑΝΕΝΑ ΑΙΤΗΜΑ ΠΡΟΣ ΤΟ GOOGLE Ή ΤΟΝ WORKER ΑΠΟ ΕΔΩ. Η ανάλυση τρέχει ΜΟΝΟ
+// στους runners του GitHub (κανάλι 2523: ποτέ από τον υπολογιστή του χειριστή).
+// Ο αναλυτής και η D1 είναι ψεύτικοι, και το `fetch` αντικαθίσταται.
 //
-// Τι ελέγχεται (απόφαση 3236, «με όριο και στάση στο 429»): η πρώτη φορά δεν
-// ρωτά· ένα άρθρο που έφυγε δεν αλλάζει ποτέ διεύθυνση· η άρνηση σταματά κάθε
-// ανάλυση του run· το ταβάνι κόβει τα παλαιότερα· η μνήμη επιβιώνει και σβήνει.
+// Τι ελέγχεται (απόφαση 3236, «με όριο και στάση στο 429», και η διόρθωση 3266):
+// ό,τι η D1 έχει ήδη δεν αλλάζει ποτέ διεύθυνση· χωρίς απάντηση της D1 τίποτα
+// δεν αναλύεται· η άρνηση σταματά κάθε ανάλυση του run· το ταβάνι κόβει τα
+// παλαιότερα· η μνήμη επιβιώνει και σβήνει.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -15,7 +16,6 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
   MEMO_TTL_DAYS,
-  RECORD_WINDOW,
   RESOLVE_WINDOW,
   isGoogleNewsPrimary,
   loadMemo,
@@ -71,45 +71,86 @@ function fakeResolver(how = () => "ok") {
   return fn;
 }
 
-const run = (xml, memo, ctx, resolve, source = "Εκδότης") =>
-  resolvePrimaryLinks({ source, xml, memo, ctx, today: TODAY, resolve, concurrency: 1 });
+/** Ψεύτικη D1: τα ids που «υπάρχουν ήδη»· κρατά τι ρωτήθηκε. `down` = δεν απαντά. */
+function fakeD1(ids = [], { down = false } = {}) {
+  const asked = [];
+  const fn = async (links) => {
+    asked.push([...links]);
+    if (down) throw new Error("known-urls HTTP 503");
+    return new Set(links.filter((l) => ids.some((id) => l === gn(id))));
+  };
+  fn.asked = asked;
+  return fn;
+}
 
-/** Μνήμη όπου ο στόχος έχει ήδη περάσει την «πρώτη φορά» του. */
+const run = (xml, memo, ctx, resolve, known = fakeD1(), source = "Εκδότης") =>
+  resolvePrimaryLinks({ source, xml, memo, ctx, today: TODAY, resolve, known, concurrency: 1 });
+
+/** Μνήμη όπου ο στόχος υπάρχει ήδη, χωρίς εγγραφές. */
 const warm = (source = "Εκδότης") => ({ v: 1, t: { [source]: {} } });
 
-test("ΠΡΩΤΗ ΦΟΡΑ: κανένα αίτημα, όλα κρατούν το Google και καταγράφονται", async () => {
+test("ΤΟ ΠΕΡΙΣΤΑΤΙΚΟ ΤΟΥ TAXHEAVEN (12:14Z): λείπει από τη μνήμη, υπάρχει στη D1 → κρατά το Google, κανένα αίτημα", async () => {
+  const memo = warm();
+  const ctx = newRunContext(100);
+  const r0 = fakeResolver();
+  // Μια σελίδα του 31/8 ξαναφαίνεται· η D1 την έχει ήδη με σύνδεσμο Google.
+  const xml = feed(item("NEO", 0), item("PALIA", 24 * 35));
+  const r = await run(xml, memo, ctx, r0, fakeD1(["PALIA"]));
+  assert.deepEqual(r0.calls, [gn("NEO")]);
+  assert.equal(r.stored, 1);
+  assert.ok(r.xml.includes(`<link>${gn("PALIA")}</link>`));
+  assert.ok(r.xml.includes(`<link>${pub("NEO")}</link>`));
+  assert.equal(memo.t["Εκδότης"][memoKey(gn("PALIA"))][0], 0);
+  assert.equal(ctx.stored, 1);
+});
+
+test("ΣΤΟΧΟΣ ΧΩΡΙΣ ΜΝΗΜΗ (πρώτο run ή χαμένη cache): ό,τι έχει η D1 μένει, ό,τι δεν έχει αναλύεται", async () => {
   const memo = { v: 1, t: {} };
   const ctx = newRunContext(100);
   const r0 = fakeResolver();
   const xml = feed(item("A", 1), item("B", 2), item("C", 3));
-  const r = await run(xml, memo, ctx, r0);
+  const r = await run(xml, memo, ctx, r0, fakeD1(["B", "C"]));
   assert.equal(r.cold, true);
+  assert.deepEqual(r0.calls, [gn("A")]);
+  assert.equal(r.stored, 2);
+  assert.ok(r.xml.includes(`<link>${pub("A")}</link>`));
+  assert.ok(r.xml.includes(`<link>${gn("B")}</link>`));
+  assert.equal(Object.keys(memo.t["Εκδότης"]).length, 3);
+});
+
+test("Η D1 ΔΕΝ ΑΠΑΝΤΑ: καμία ανάλυση, καμία εγγραφή στη μνήμη, το φορτίο αυτούσιο· το επόμενο run ξαναρωτά", async () => {
+  const memo = warm();
+  const ctx = newRunContext(100);
+  const r0 = fakeResolver();
+  const xml = feed(item("N1", 0), item("N2", 1));
+  const down = fakeD1([], { down: true });
+  const r = await run(xml, memo, ctx, r0, down);
+  assert.equal(r.checkFailed, true);
   assert.equal(r0.calls.length, 0);
   assert.equal(r.xml, xml);
-  assert.equal(r.recorded, 3);
-  assert.deepEqual(Object.values(memo.t["Εκδότης"]).map((e) => e[0]), [0, 0, 0]);
-  assert.equal(ctx.calls, 0);
-  assert.equal(ctx.budget, 100);
+  assert.deepEqual(memo.t["Εκδότης"], {});
+  assert.equal(ctx.checkFailed, 1);
+  // Στο μεταξύ ο Worker τα έβαλε με Google: το επόμενο run τα βρίσκει «γνωστά».
+  const up = fakeD1(["N1", "N2"]);
+  const r2 = await run(xml, memo, newRunContext(100), r0, up);
+  assert.equal(up.asked.length, 1);
+  assert.equal(r0.calls.length, 0);
+  assert.equal(r2.xml, xml);
 });
 
 test("ΝΕΟ ΑΡΘΡΟ: αναλύεται, και η διεύθυνση του εκδότη μπαίνει στο <link> ΚΑΙ στην περιγραφή", async () => {
-  const memo = { v: 1, t: {} };
-  const ctx = newRunContext(100);
+  const memo = warm();
   const r0 = fakeResolver();
-  await run(feed(item("A", 2), item("B", 3)), memo, ctx, r0);
-  const r = await run(feed(item("NEO", 0), item("A", 2), item("B", 3)), memo, ctx, r0);
-  assert.equal(r.cold, false);
+  const r = await run(feed(item("NEO", 0), item("A", 2)), memo, newRunContext(100), r0, fakeD1(["A"]));
   assert.deepEqual(r0.calls, [gn("NEO")]);
   assert.equal(r.resolved, 1);
   assert.ok(r.xml.includes(`<link>${pub("NEO")}</link>`));
   assert.ok(r.xml.includes(`href="${pub("NEO")}"`));
   assert.ok(!r.xml.includes(gn("NEO")));
-  // Τα άρθρα της πρώτης φοράς έχουν ήδη φύγει με το Google: μένουν έτσι.
   assert.ok(r.xml.includes(`<link>${gn("A")}</link>`));
-  assert.ok(r.xml.includes(`<link>${gn("B")}</link>`));
 });
 
-test("ΑΜΕΤΑΒΛΗΤΟ: στο επόμενο run το ίδιο άρθρο φεύγει με την ίδια διεύθυνση, ΧΩΡΙΣ αίτημα", async () => {
+test("ΑΜΕΤΑΒΛΗΤΟ: στο επόμενο run το ίδιο άρθρο φεύγει με την ίδια διεύθυνση, χωρίς D1 και χωρίς Google", async () => {
   const memo = warm();
   const first = fakeResolver();
   const xml = feed(item("NEO", 0), item("A", 2));
@@ -117,9 +158,11 @@ test("ΑΜΕΤΑΒΛΗΤΟ: στο επόμενο run το ίδιο άρθρο �
   assert.equal(first.calls.length, 2);
   // Ακόμη κι αν το Google τώρα αρνείται, η διεύθυνση βγαίνει από τη μνήμη.
   const refusing = fakeResolver(() => "refuse");
+  const d1 = fakeD1();
   const ctx2 = newRunContext(100);
-  const r2 = await run(xml, memo, ctx2, refusing);
+  const r2 = await run(xml, memo, ctx2, refusing, d1);
   assert.equal(refusing.calls.length, 0);
+  assert.equal(d1.asked.length, 0);
   assert.equal(r2.xml, r1.xml);
   assert.equal(r2.reused, 2);
   assert.equal(ctx2.refused, false);
@@ -142,7 +185,7 @@ test("ΣΤΑΣΗ ΣΤΟ 429: μετά την πρώτη άρνηση κανέν�
   assert.equal(ctx.keptCap, 0);
   // Άλλος στόχος στο ΙΔΙΟ run: κανένα αίτημα.
   const other = fakeResolver();
-  await run(feed(item("X", 0)), memo, ctx, other, "Άλλος");
+  await run(feed(item("X", 0)), memo, ctx, other, fakeD1(), "Άλλος");
   assert.equal(other.calls.length, 0);
   // Επόμενο run, το Google απαντά: τα πέντε ΔΕΝ ξαναρωτιούνται, κρατούν το Google.
   const ok = fakeResolver();
@@ -179,19 +222,18 @@ test("ΤΑΒΑΝΙ: με 2 αναλύσεις και 4 νέα, λύνονται 
   assert.ok(r.xml.includes(`<link>${gn("N3")}</link>`));
 });
 
-test("ΠΑΡΑΘΥΡΟ: αναλύονται τα 25 νεότερα, τα 26-30 καταγράφονται «Google», τα παλαιότερα τίποτα", async () => {
+test("ΠΑΡΑΘΥΡΟ: ελέγχονται και αναλύονται μόνο τα 25 νεότερα· τα παλαιότερα ούτε καταγράφονται", async () => {
   const memo = warm();
   const r0 = fakeResolver();
+  const d1 = fakeD1();
   const ids = Array.from({ length: 35 }, (_, i) => `I${String(i).padStart(2, "0")}`);
-  const r = await run(feed(...ids.map((id, i) => item(id, i))), memo, newRunContext(100), r0);
+  await run(feed(...ids.map((id, i) => item(id, i))), memo, newRunContext(100), r0, d1);
   assert.equal(r0.calls.length, RESOLVE_WINDOW);
-  assert.equal(r.recorded, RECORD_WINDOW);
+  assert.equal(d1.asked[0].length, RESOLVE_WINDOW);
   const e = memo.t["Εκδότης"];
-  assert.equal(Object.keys(e).length, RECORD_WINDOW);
+  assert.equal(Object.keys(e).length, RESOLVE_WINDOW);
   assert.equal(e[memoKey(gn("I24"))][0], pub("I24"));
-  assert.equal(e[memoKey(gn("I25"))][0], 0);
-  assert.equal(e[memoKey(gn("I29"))][0], 0);
-  assert.equal(e[memoKey(gn("I30"))], undefined);
+  assert.equal(e[memoKey(gn("I25"))], undefined);
 });
 
 test("ΑΠΟΤΥΧΙΑ (όχι άρνηση): το άρθρο κρατά το Google και οι αναλύσεις συνεχίζουν", async () => {
@@ -211,7 +253,7 @@ test("ΣΕΙΡΑ: όπως ο Worker, νεότερα πρώτα, ισοπαλί�
   assert.deepEqual(primaryItems(xml).map((i) => i.link), [gn("A"), gn("B"), gn("C"), gn("X")]);
 });
 
-test("ΜΝΗΜΗ: γράφεται και διαβάζεται· ό,τι δεν φάνηκε 8+ ημέρες σβήνεται, ο στόχος μένει «γνωστός»", async () => {
+test("ΜΝΗΜΗ: γράφεται και διαβάζεται· ό,τι δεν φάνηκε 8+ ημέρες σβήνεται, ο στόχος μένει", async () => {
   const dir = mkdtempSync(join(tmpdir(), "gnmemo-"));
   const path = join(dir, "gn-links.json");
   const memo = {
@@ -225,11 +267,10 @@ test("ΜΝΗΜΗ: γράφεται και διαβάζεται· ό,τι δεν 
   const { memo: m2, found } = loadMemo(path);
   assert.equal(found, true);
   assert.deepEqual(m2.t["Άδειος"], {});
-  // Στόχος με άδειο κλειδί ΔΕΝ είναι «πρώτη φορά»: το νέο του άρθρο αναλύεται.
-  const r = await run(feed(item("Z", 0)), m2, newRunContext(10), fakeResolver(), "Άδειος");
+  const r = await run(feed(item("Z", 0)), m2, newRunContext(10), fakeResolver(), fakeD1(), "Άδειος");
   assert.equal(r.cold, false);
   assert.equal(r.resolved, 1);
-  // Χωρίς αρχείο ή με χαλασμένο: πρώτη φορά για όλους.
+  // Χωρίς αρχείο ή με χαλασμένο: found false, κρίνει η D1.
   assert.equal(loadMemo(join(dir, "δεν-υπάρχει.json")).found, false);
   writeFileSync(join(dir, "χαλασμένο.json"), "{");
   assert.equal(loadMemo(join(dir, "χαλασμένο.json")).found, false);

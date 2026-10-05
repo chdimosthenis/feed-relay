@@ -7,41 +7,41 @@
 // αναγνώστης πήγαινε μέσω Google. Από εδώ και πέρα τα ΝΕΑ άρθρα τους φεύγουν με
 // τη διεύθυνση του εκδότη· τα αποθηκευμένα μένουν όπως είναι.
 //
-// ⛔⛔ ΓΙΑΤΙ ΜΝΗΜΗ ΚΑΙ ΟΧΙ «ΑΝΑΛΥΣΕ ΚΑΘΕ ΦΟΡΑ». Ο Worker αναγνωρίζει ένα άρθρο
-// που ξαναστέλνεται ΜΟΝΟ από τη διεύθυνσή του (`loadKnownUrls`)· ο έλεγχος
-// τίτλου πιάνει ό,τι μπήκε τις τελευταίες 6 ώρες. Το ίδιο άρθρο ξαναστέλνεται σε
-// ΚΑΘΕ κύκλο όσο μένει στα 25 νεότερα, μέρες ολόκληρες για μια μικρή πηγή. Αν
-// μία φορά φύγει με τη διεύθυνση του εκδότη και την επόμενη με του Google
-// (επειδή το Google αρνήθηκε ή τελείωσε το ταβάνι), μπαίνει ΔΕΥΤΕΡΗ φορά. Ο
-// κανόνας λοιπόν: η διεύθυνση με την οποία ένα άρθρο έφυγε μία φορά δεν αλλάζει
-// ποτέ. Η μνήμη κρατά αυτή την απόφαση ανά σύνδεσμο Google, και ένα άρθρο που
-// αναλύθηκε δεν ξαναρωτά το Google: η ίδια διεύθυνση βγαίνει από τη μνήμη.
+// ⛔⛔ Ο ΚΑΝΟΝΑΣ: Η ΔΙΕΥΘΥΝΣΗ ΜΕ ΤΗΝ ΟΠΟΙΑ ΕΝΑ ΑΡΘΡΟ ΜΠΗΚΕ ΔΕΝ ΑΛΛΑΖΕΙ ΠΟΤΕ. Ο
+// Worker αναγνωρίζει ένα άρθρο που ξαναστέλνεται ΜΟΝΟ από τη διεύθυνσή του
+// (`loadKnownUrls`)· ο έλεγχος τίτλου πιάνει μόνο ό,τι δημοσιεύτηκε τις
+// τελευταίες 6 ώρες. Άρθρο που μπήκε με σύνδεσμο Google και ξαναστέλνεται με
+// διεύθυνση εκδότη μπαίνει ΔΕΥΤΕΡΗ φορά.
 //
-// ⛔ Η ΠΡΩΤΗ ΦΟΡΑ ΚΡΑΤΑ ΤΟ GOOGLE. Ένας στόχος που λείπει από τη μνήμη (όλοι στο
-// πρώτο run, κάθε νέος στόχος αργότερα) έχει ήδη στείλει τα τρέχοντα άρθρα του
-// με διεύθυνση Google. Αν τα αναλύαμε τώρα, θα έμπαιναν όλα δεύτερη φορά. Γι'
-// αυτό καταγράφονται «μένει Google» χωρίς κανένα αίτημα.
+// ⛔⛔ ΚΑΙ ΤΟ ΤΙ ΕΧΕΙ ΜΠΕΙ ΤΟ ΞΕΡΕΙ ΜΟΝΟ Η D1 (κανάλι 3266). Η πρώτη γραφή
+// έκρινε από τη μνήμη: ό,τι έλειπε από αυτήν στο πρώτο run, το θεωρούσε νέο.
+// Μετρημένο 5/10 12:14Z: το Google News ΔΕΝ δίνει τα ίδια άρθρα σε κάθε run, και
+// 4 του Taxheaven που η D1 είχε ήδη με σύνδεσμο Google (μία σελίδα του 31/8)
+// μπήκαν ξανά με διεύθυνση εκδότη. Τώρα κάθε σύνδεσμος που λείπει από τη μνήμη
+// ελέγχεται πρώτα στη D1 (`/known-urls` του fetcher): αν υπάρχει, κρατά το
+// Google χωρίς κανένα αίτημα. Αν η D1 δεν απαντήσει, καμία ανάλυση και καμία
+// εγγραφή: το φορτίο φεύγει όπως ήρθε, και το επόμενο run ξαναρωτά.
 //
-// ⚠ ΤΙ ΜΕΝΕΙ ΑΚΑΛΥΠΤΟ. Αν χαθεί η κρυφή μνήμη του GitHub, το επόμενο run είναι
-// «πρώτη φορά» για όλους, και όσα άρθρα είχαν φύγει με διεύθυνση εκδότη και
-// μένουν στα 25 νεότερα ξαναφεύγουν με του Google. Όσα μπήκαν τις τελευταίες 6
-// ώρες τα πιάνει ο έλεγχος τίτλου· τα παλαιότερα μπαίνουν δεύτερη φορά, το πολύ
-// 25 ανά πηγή, μία φορά. Το ίδιο ισχύει για ένα `git revert` αυτού του αρχείου:
-// η ήπια επαναφορά είναι `GN_PRIMARY_RESOLVE_CAP: "0"` στο relay.yml, που
-// σταματά κάθε νέο αίτημα και κρατά τη μνήμη.
+// Η ΜΝΗΜΗ ΕΙΝΑΙ ΟΙΚΟΝΟΜΙΑ, ΟΧΙ ΑΛΗΘΕΙΑ. Γλιτώνει την ερώτηση στη D1 και το
+// αίτημα στο Google για ό,τι αποφασίστηκε ήδη, και κρατά τη διεύθυνση του
+// εκδότη σταθερή. Αν χαθεί, η D1 ξαναδίνει τα ίδια: ό,τι μπήκε με Google είναι
+// «γνωστό», ό,τι μπήκε με διεύθυνση εκδότη ξαναλύνεται στην ίδια διεύθυνση.
+//
+// ⚠ ΤΙ ΜΕΝΕΙ ΑΚΑΛΥΠΤΟ. (1) Χαμένη μνήμη ΚΑΙ άρνηση του Google στο ίδιο run: όσα
+// είχαν μπει με διεύθυνση εκδότη ξαναφεύγουν με του Google. (2) Νέος σύνδεσμος
+// Google για ΑΝΑΝΕΩΜΕΝΟ άρθρο: μπαίνει δεύτερη φορά, όπως έμπαινε και πριν με
+// δύο συνδέσμους Google. (3) Ένα `git revert` αυτού του αρχείου: όσα έφυγαν με
+// διεύθυνση εκδότη ξαναφεύγουν με του Google, ως 25 ανά πηγή. Γι' αυτό η ήπια
+// επαναφορά είναι `GN_PRIMARY_RESOLVE_CAP: "0"` στο relay.yml.
 import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync } from "node:fs";
 
 /** Πόσα νεότερα του φορτίου κρατά ο Worker (`AGGREGATOR_ITEMS_PER_POST`). Μόνο
- * αυτά αναλύονται· ό,τι πέφτει πιο κάτω δεν μπαίνει ποτέ στη βάση. */
+ * αυτά ελέγχονται και αναλύονται· ό,τι πέφτει πιο κάτω δεν μπαίνει στη βάση, και
+ * αν ανέβει αργότερα, η D1 θα πει τότε αν το έχει. */
 export const RESOLVE_WINDOW = 25;
-/** Πόσα νεότερα καταγράφονται. Πέντε παραπάνω: ο Worker κόβει τις μελλοντικές
- * ημερομηνίες στο «τώρα» πριν ταξινομήσει, οπότε στο όριο των 25 μπορεί να
- * διαφωνήσουμε κατά μία θέση. Ό,τι πέσει εκεί καταγράφεται «μένει Google» ώστε
- * να μην αλλάξει ποτέ διεύθυνση. */
-export const RECORD_WINDOW = 30;
 /** Μέρες χωρίς εμφάνιση πριν σβηστεί μια εγγραφή. Το ευρύτερο ερώτημα είναι
- * `when:7d` (`wideUrl`), άρα μετά από 8 ημέρες ένα άρθρο δεν ξαναφαίνεται. */
+ * `when:7d` (`wideUrl`)· ό,τι ξαναφανεί μετά, το κρίνει η D1. */
 export const MEMO_TTL_DAYS = 8;
 
 const ITEM_BLOCK = /<item\b[\s\S]*?<\/item>/gi;
@@ -57,7 +57,7 @@ export const dayOf = (ms) => Math.floor(ms / 86_400_000);
 export const isGoogleNewsPrimary = (t) =>
   /^https:\/\/news\.google\.com\//.test(t.url ?? "");
 
-/** `found: false` σημαίνει πρώτο run (ή χαμένη μνήμη): όλοι οι στόχοι «πρώτη φορά». */
+/** `found: false` σημαίνει πρώτο run ή χαμένη μνήμη· την απόφαση την παίρνει η D1. */
 export function loadMemo(path) {
   try {
     const m = JSON.parse(readFileSync(path, "utf8"));
@@ -68,8 +68,7 @@ export function loadMemo(path) {
   return { memo: { v: 1, t: {} }, found: false };
 }
 
-/** Σβήνει ό,τι δεν φάνηκε για `MEMO_TTL_DAYS`· κρατά πάντα το κλειδί του στόχου,
- * γιατί στόχος χωρίς κλειδί θα ξαναγινόταν «πρώτη φορά». */
+/** Σβήνει ό,τι δεν φάνηκε για `MEMO_TTL_DAYS`· κρατά το κλειδί του στόχου. */
 export function saveMemo(path, memo, today) {
   let kept = 0;
   let pruned = 0;
@@ -102,7 +101,19 @@ export function primaryItems(xml) {
 
 /** Κοινό για όλο το run: το ταβάνι και η στάση ισχύουν για όλους τους στόχους μαζί. */
 export function newRunContext(budget) {
-  return { budget, refused: false, refusedAt: null, calls: 0, fresh: 0, resolved: 0, keptCap: 0, keptRefused: 0, failures: 0 };
+  return {
+    budget,
+    refused: false,
+    refusedAt: null,
+    calls: 0,
+    fresh: 0,
+    stored: 0,
+    resolved: 0,
+    keptCap: 0,
+    keptRefused: 0,
+    failures: 0,
+    checkFailed: 0,
+  };
 }
 
 /** Σημειώνει την άρνηση του Google μία φορά· από εκεί και πέρα καμία νέα ανάλυση. */
@@ -117,11 +128,12 @@ export function markRefused(ctx) {
  * Διαλέγει, ανά σύνδεσμο Google των νεότερων, ποια διεύθυνση φεύγει, και
  * γυρίζει το φορτίο με τις διευθύνσεις του εκδότη στη θέση τους.
  *
- * `resolve(link)` γυρίζει τη διεύθυνση ή null· πετά σφάλμα με `refused: true`
- * όταν το Google αρνείται (429/503). Τότε σταματά ΚΑΘΕ ανάλυση του run, και ό,τι
- * δεν αναλύθηκε φεύγει με τον σύνδεσμο του Google, για πάντα.
+ * `known(links)` γυρίζει το σύνολο όσων συνδέσμων η D1 έχει ήδη· πετά σφάλμα αν
+ * δεν απαντήσει. `resolve(link)` γυρίζει τη διεύθυνση ή null· πετά σφάλμα με
+ * `refused: true` όταν το Google αρνείται (429/503). Τότε σταματά ΚΑΘΕ ανάλυση
+ * του run, και ό,τι δεν αναλύθηκε φεύγει με τον σύνδεσμο του Google, για πάντα.
  */
-export async function resolvePrimaryLinks({ source, xml, memo, ctx, today, resolve, concurrency = 4 }) {
+export async function resolvePrimaryLinks({ source, xml, memo, ctx, today, resolve, known, concurrency = 4 }) {
   const cold = !Object.hasOwn(memo.t, source);
   if (cold) memo.t[source] = {};
   const entries = memo.t[source];
@@ -138,11 +150,22 @@ export async function resolvePrimaryLinks({ source, xml, memo, ctx, today, resol
       if (e[0] && pos < RESOLVE_WINDOW) reused++;
       return;
     }
-    if (pos < RECORD_WINDOW) fresh.push({ link: it.link, key, pos });
+    if (pos < RESOLVE_WINDOW) fresh.push({ link: it.link, key });
   });
 
+  // Η D1 πρώτα: ό,τι έχει ήδη μπει κρατά τη διεύθυνση με την οποία μπήκε.
+  let stored = new Set();
+  let checkFailed = false;
+  if (fresh.length) {
+    try {
+      stored = await known(fresh.map((f) => f.link));
+    } catch {
+      checkFailed = true;
+    }
+  }
+
   const got = new Map();
-  const queue = cold ? [] : fresh.filter((f) => f.pos < RESOLVE_WINDOW);
+  const queue = checkFailed ? [] : fresh.filter((f) => !stored.has(f.link));
   const attempted = queue.length;
   let failures = 0;
   let refusedHere = 0;
@@ -168,7 +191,8 @@ export async function resolvePrimaryLinks({ source, xml, memo, ctx, today, resol
     }),
   );
 
-  for (const f of fresh) entries[f.key] = [got.get(f.link) ?? 0, today];
+  // Χωρίς απάντηση της D1 δεν καταγράφεται τίποτα: το επόμενο run ξαναρωτά.
+  if (!checkFailed) for (const f of fresh) entries[f.key] = [got.get(f.link) ?? 0, today];
 
   let out = xml;
   for (const [link, key] of seen) {
@@ -178,19 +202,21 @@ export async function resolvePrimaryLinks({ source, xml, memo, ctx, today, resol
 
   // Ό,τι έμεινε στην ουρά δεν ρωτήθηκε ποτέ: λόγω στάσης ή λόγω ταβανιού.
   const notTried = queue.length;
-  if (!cold) {
-    ctx.fresh += attempted;
-    ctx.resolved += got.size;
-    ctx.failures += failures;
-    ctx.keptRefused += refusedHere;
-    if (ctx.refused) ctx.keptRefused += notTried;
-    else ctx.keptCap += notTried;
-  }
+  const storedHere = checkFailed ? 0 : fresh.length - attempted;
+  ctx.fresh += attempted;
+  ctx.stored += storedHere;
+  ctx.resolved += got.size;
+  ctx.failures += failures;
+  ctx.keptRefused += refusedHere;
+  if (ctx.refused) ctx.keptRefused += notTried;
+  else ctx.keptCap += notTried;
+  if (checkFailed) ctx.checkFailed++;
   return {
     xml: out,
     cold,
-    fresh: cold ? 0 : attempted,
-    recorded: fresh.length,
+    checkFailed,
+    fresh: attempted,
+    stored: storedHere,
     resolved: got.size,
     failures,
     refused: refusedHere,
