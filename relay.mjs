@@ -111,7 +111,10 @@ async function fetchPayload(t) {
  * has indexed. The payload is always RSS, which is why the fetcher accepts
  * an `rss` document for a source whose primary surface is a sitemap. */
 function aggregatorUrl(referer) {
-  const host = new URL(referer).hostname.replace(/^www\./, "");
+  // Domain AND path: BasketNews.gr moved to basketnews.com/gr/ (2026-10-05),
+  // and basketnews.com carries other editions too. No other referer has a path.
+  const u = new URL(referer);
+  const host = u.hostname.replace(/^www\./, "") + u.pathname.replace(/\/+$/, "");
   // when:1d: without it Google answers 100 items ranked by RELEVANCE, mostly
   // old, and the newest articles are not among them (measured 2026-10-04 on
   // 23 fallback sources: 456 -> 783 articles of the last 48h in the answer).
@@ -153,6 +156,28 @@ async function askRouting(source, refusalStatus, refusalMessage) {
 }
 
 
+/** Google News answers by relevance, up to 100 items, inside whatever window
+ * it is given. A small publisher asked for one day answers an EMPTY channel on
+ * a quiet weekend, which the Worker counts as relay_no_items (Agrotypos and
+ * Axianews, email of 2026-10-04 19:36Z). So the week (`wideUrl`) is asked
+ * first; a full answer means the week hides the newest items, and the day
+ * query (`url`) is asked instead. The Worker keeps the 25 newest either way.
+ * The consuming application builds both URLs in lib/google-news-query.ts,
+ * where GOOGLE_NEWS_FULL_ANSWER must equal GN_FULL_ANSWER here. */
+const GN_FULL_ANSWER = 95;
+
+async function fetchPrimary(t) {
+  if (!t.wideUrl) return fetchPayload(t);
+  let wide;
+  try {
+    wide = await fetchPayload({ ...t, url: t.wideUrl });
+  } catch {
+    return fetchPayload(t);
+  }
+  const items = (wide.match(/<item>/g) || []).length;
+  return items >= GN_FULL_ANSWER ? fetchPayload(t) : wide;
+}
+
 async function relayOne(t) {
   let kind = t.kind;
   // ⚠ THIS FLAG USED TO BE DERIVED AND WAS WRONG FOR MOST OF THE ROSTER.
@@ -169,7 +194,7 @@ async function relayOne(t) {
   let refusalMessage = null;
   let resolvedNote = "";
   try {
-    payload = await fetchPayload(t);
+    payload = await fetchPrimary(t);
   } catch (e) {
     // Only a document-shaped source has a meaningful fallback; a wp-json or
     // homepage-scrape mapper cannot read an aggregator feed.

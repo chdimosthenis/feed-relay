@@ -63,7 +63,8 @@
     "source": "Agrotypos",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Aagrotypos.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://agrotypos.gr"
+    "referer": "https://agrotypos.gr",
+    "wideUrl": "https://news.google.com/rss/search?q=site%3Aagrotypos.gr%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
   },
   {
     "source": "Alphanews",
@@ -75,13 +76,15 @@
     "source": "ANT1 News",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Aant1news.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://www.ant1news.gr"
+    "referer": "https://www.ant1news.gr",
+    "wideUrl": "https://news.google.com/rss/search?q=site%3Aant1news.gr%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
   },
   {
     "source": "APE-MPE",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Aamna.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://www.amna.gr"
+    "referer": "https://www.amna.gr",
+    "wideUrl": "https://news.google.com/rss/search?q=site%3Aamna.gr%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
   },
   {
     "source": "Astinomiko",
@@ -93,19 +96,22 @@
     "source": "Athinorama",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Aathinorama.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://www.athinorama.gr"
+    "referer": "https://www.athinorama.gr",
+    "wideUrl": "https://news.google.com/rss/search?q=site%3Aathinorama.gr%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
   },
   {
     "source": "Autotriti",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Aautotriti.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://autotriti.gr"
+    "referer": "https://autotriti.gr",
+    "wideUrl": "https://news.google.com/rss/search?q=site%3Aautotriti.gr%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
   },
   {
     "source": "Axianews",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Aaxianews.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://axianews.gr"
+    "referer": "https://axianews.gr",
+    "wideUrl": "https://news.google.com/rss/search?q=site%3Aaxianews.gr%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
   },
   {
     "source": "Baby on Board",
@@ -116,14 +122,16 @@
   {
     "source": "BasketNews.gr",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Abasketnews.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://basketnews.gr"
+    "url": "https://news.google.com/rss/search?q=site%3Abasketnews.com%2Fgr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
+    "referer": "https://basketnews.com/gr",
+    "wideUrl": "https://news.google.com/rss/search?q=site%3Abasketnews.com%2Fgr%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
   },
   {
     "source": "BookPress",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Abookpress.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://bookpress.gr"
+    "referer": "https://bookpress.gr",
+    "wideUrl": "https://news.google.com/rss/search?q=site%3Abookpress.gr%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
   },
   {
     "source": "BusinessNews",
@@ -177,7 +185,8 @@
     "source": "Economy Today",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Aeconomytoday.sigmalive.com%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://economytoday.sigmalive.com"
+    "referer": "https://economytoday.sigmalive.com",
+    "wideUrl": "https://news.google.com/rss/search?q=site%3Aeconomytoday.sigmalive.com%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
   },
   {
     "source": "Efsyn",
@@ -207,7 +216,8 @@
     "source": "Energypress",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Aenergypress.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://energypress.gr"
+    "referer": "https://energypress.gr",
+    "wideUrl": "https://news.google.com/rss/search?q=site%3Aenergypress.gr%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
   },
   {
     "source": "Enikos",
@@ -231,7 +241,8 @@
     "source": "Gavros",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Agavros.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://gavros.gr"
+    "referer": "https://gavros.gr",
+    "wideUrl": "https://news.google.com/rss/search?q=site%3Agavros.gr%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
   },
   {
     "source": "Gazzetta",
@@ -273,7 +284,8 @@
     "source": "iatronet",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Aiatronet.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://www.iatronet.gr"
+    "referer": "https://www.iatronet.gr",
+    "wideUrl": "https://news.google.com/rss/search?q=site%3Aiatronet.gr%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
   },
   {
     "source": "iGrevena",
@@ -309,7 +321,8 @@
     "source": "Insomnia",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Ainsomnia.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://insomnia.gr"
+    "referer": "https://insomnia.gr",
+    "wideUrl": "https://news.google.com/rss/search?q=site%3Ainsomnia.gr%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
   },
   {
     "source": "InStyle",
@@ -333,13 +346,15 @@
     "source": "Karfitsa",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Akarfitsa.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://www.karfitsa.gr"
+    "referer": "https://www.karfitsa.gr",
+    "wideUrl": "https://news.google.com/rss/search?q=site%3Akarfitsa.gr%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
   },
   {
     "source": "Kathimerini Cyprus",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Akathimerini.com.cy%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://www.kathimerini.com.cy"
+    "referer": "https://www.kathimerini.com.cy",
+    "wideUrl": "https://news.google.com/rss/search?q=site%3Akathimerini.com.cy%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
   },
   {
     "source": "Kozan.gr",
@@ -393,7 +408,8 @@
     "source": "Makeleio",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Amakeleio.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://www.makeleio.gr"
+    "referer": "https://www.makeleio.gr",
+    "wideUrl": "https://news.google.com/rss/search?q=site%3Amakeleio.gr%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
   },
   {
     "source": "Matchnews.gr",
@@ -561,7 +577,8 @@
     "source": "Reporter Cyprus",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Areporter.com.cy%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://www.reporter.com.cy"
+    "referer": "https://www.reporter.com.cy",
+    "wideUrl": "https://news.google.com/rss/search?q=site%3Areporter.com.cy%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
   },
   {
     "source": "Seleo",
@@ -585,7 +602,8 @@
     "source": "Sportdog",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Asportdog.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://www.sportdog.gr"
+    "referer": "https://www.sportdog.gr",
+    "wideUrl": "https://news.google.com/rss/search?q=site%3Asportdog.gr%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
   },
   {
     "source": "Sportime",
@@ -597,13 +615,15 @@
     "source": "Stockwatch",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Astockwatch.com.cy%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://www.stockwatch.com.cy"
+    "referer": "https://www.stockwatch.com.cy",
+    "wideUrl": "https://news.google.com/rss/search?q=site%3Astockwatch.com.cy%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
   },
   {
     "source": "Taxheaven",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Ataxheaven.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://taxheaven.gr"
+    "referer": "https://taxheaven.gr",
+    "wideUrl": "https://news.google.com/rss/search?q=site%3Ataxheaven.gr%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
   },
   {
     "source": "TechIt",
@@ -669,13 +689,15 @@
     "source": "WomenOnly",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Awomenonly.skai.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://womenonly.skai.gr"
+    "referer": "https://womenonly.skai.gr",
+    "wideUrl": "https://news.google.com/rss/search?q=site%3Awomenonly.skai.gr%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
   },
   {
     "source": "WorldEnergyNews",
     "kind": "rss",
     "url": "https://news.google.com/rss/search?q=site%3Aworldenergynews.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://worldenergynews.gr"
+    "referer": "https://worldenergynews.gr",
+    "wideUrl": "https://news.google.com/rss/search?q=site%3Aworldenergynews.gr%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
   },
   {
     "source": "Xalkidiki Politiki",
