@@ -485,6 +485,12 @@
     "referer": "https://www.newsbeast.gr"
   },
   {
+    "source": "NewsVolos",
+    "kind": "rss",
+    "url": "https://www.newsvolos.com/feed/",
+    "referer": "https://newsvolos.com"
+  },
+  {
     "source": "Omega Cyprus",
     "kind": "rss",
     "url": "https://omegalive.com.cy/feed/",
