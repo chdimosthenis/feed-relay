@@ -1,0 +1,48 @@
+name: gapfill
+
+# Fill a gap for ONE relayed source, on demand only. The publisher's feed keeps just its
+# newest 10-25 items, so what was published while the cron fetcher was refused sits on
+# /feed/?paged=2, ?paged=3 ... This fetches ONE such page from the runner (the only egress
+# these publishers answer) and hands it to the fetcher, which dedups by URL and title.
+# Never scheduled; dispatch it by hand:
+#   gh workflow run gapfill.yml --repo chdimosthenis/feed-relay \
+#     -f source="Orthodox Times" -f url="https://www.orthodoxtimes.gr/feed/?paged=2" \
+#     -f referer="https://www.orthodoxtimes.gr"
+on:
+  workflow_dispatch:
+    inputs:
+      source:
+        description: "Source name exactly as in targets.json"
+        required: true
+        type: string
+      url:
+        description: "The publisher page to fetch, full, same site as the referer"
+        required: true
+        type: string
+      referer:
+        description: "Referer (also fixes the site the url must be on)"
+        required: true
+        type: string
+
+concurrency:
+  group: gapfill
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  gapfill:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch one page and hand it to the fetcher
+        env:
+          FETCHER_URL: ${{ secrets.FETCHER_URL }}
+          FETCHER_SECRET: ${{ secrets.FETCHER_SECRET }}
+          SOURCE: ${{ inputs.source }}
+          URL: ${{ inputs.url }}
+          REFERER: ${{ inputs.referer }}
+          KIND: rss
+        run: node gapfill.mjs
