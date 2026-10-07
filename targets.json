@@ -394,6 +394,12 @@
     "referer": "https://www.lifo.gr"
   },
   {
+    "source": "LionNews",
+    "kind": "wpjson",
+    "url": "https://lionnews.gr/wp-json/wp/v2/posts?per_page=20&_embed=wp:featuredmedia&_fields=id,date,date_gmt,title,link,excerpt,content,_embedded",
+    "referer": "https://lionnews.gr"
+  },
+  {
     "source": "Logotypos.gr",
     "kind": "rss",
     "url": "https://www.logotypos.gr/feed/",
@@ -497,6 +503,12 @@
     "referer": "https://www.omegalive.com.cy"
   },
   {
+    "source": "Orthodox Times",
+    "kind": "rss",
+    "url": "https://www.orthodoxtimes.gr/feed/",
+    "referer": "https://www.orthodoxtimes.gr"
+  },
+  {
     "source": "OT.gr",
     "kind": "rss",
     "url": "https://www.ot.gr/feed/",
@@ -598,6 +610,12 @@
     "kind": "rss",
     "url": "https://seleo.gr/feed/",
     "referer": "https://www.seleo.gr"
+  },
+  {
+    "source": "Sofokleous10",
+    "kind": "rss",
+    "url": "https://sofokleous10.gr/feed/",
+    "referer": "https://www.sofokleous10.gr"
   },
   {
     "source": "Sport24",
