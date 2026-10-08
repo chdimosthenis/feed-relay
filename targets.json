@@ -675,6 +675,12 @@
     "referer": "https://theopinion.gr"
   },
   {
+    "source": "Thessaliki Gi",
+    "kind": "rss",
+    "url": "https://thessalikigi.gr/feed/",
+    "referer": "https://thessalikigi.gr"
+  },
+  {
     "source": "Thesstoday",
     "kind": "rss",
     "url": "https://thesstoday.gr/feed/",
