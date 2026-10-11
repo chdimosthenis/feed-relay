@@ -369,6 +369,12 @@
     "referer": "https://kozanipress.gr"
   },
   {
+    "source": "kynigesia.gr",
+    "kind": "rss",
+    "url": "https://www.kynigesia.gr/feed/",
+    "referer": "https://kynigesia.gr"
+  },
+  {
     "source": "Ladylike",
     "kind": "rss",
     "url": "https://www.ladylike.gr/feed/",
