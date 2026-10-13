@@ -19,6 +19,7 @@
  * Secrets: FETCHER_URL + FETCHER_SECRET (repo Actions secrets).
  */
 import { readFileSync } from "node:fs";
+import { isHtmlWall } from "./html-wall.mjs";
 
 const FETCHER_URL = process.env.FETCHER_URL;
 const FETCHER_SECRET = process.env.FETCHER_SECRET;
@@ -127,6 +128,14 @@ async function fetchPayload(t) {
     throw err;
   }
   const payload = await res.text();
+  // Τείχος που απαντά 200 (YouWeekly/Anubis, 13/10): δεν είναι ροή, και χωρίς
+  // σφάλμα η εφεδρική διαδρομή δεν ανοίγει ποτέ. Βλ. html-wall.mjs.
+  if (isHtmlWall(t.kind, payload)) {
+    const err = new Error("publisher HTTP 200 αλλά σελίδα HTML αντί για ροή");
+    err.status = null;
+    err.snippet = "html-τείχος με 200 (π.χ. Anubis): " + payload.slice(0, 100).replace(/\s+/g, " ").trim();
+    throw err;
+  }
   if (payload.length > MAX_PAYLOAD) {
     if (t.kind === "html") return payload.slice(0, MAX_PAYLOAD);
     throw new Error(`payload too large (${payload.length} bytes)`);
