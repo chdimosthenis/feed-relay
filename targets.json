@@ -1,5 +1,17 @@
 [
   {
+    "source": "KavalaNews",
+    "kind": "rss",
+    "url": "https://kavalanews.gr/rss.xml",
+    "referer": "https://kavalanews.gr"
+  },
+  {
+    "source": "PhysicsGG",
+    "kind": "rss",
+    "url": "https://physicsgg.me/feed/",
+    "referer": "https://physicsgg.me"
+  },
+  {
     "source": "Ανεξάρτητος",
     "kind": "rss",
     "url": "https://www.anexartitos.gr/feed",
