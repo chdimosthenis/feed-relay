@@ -42,6 +42,12 @@
     "referer": "https://kalavrytapress.gr"
   },
   {
+    "source": "ΛΑΚΩΝΙΚΟΣ ΤΥΠΟΣ",
+    "kind": "rss",
+    "url": "https://lakonikos.gr/index.php?option=com_k2&view=itemlist&format=feed&type=rss",
+    "referer": "https://lakonikos.gr"
+  },
+  {
     "source": "Πρωινός Λόγος",
     "kind": "rss",
     "url": "https://www.prlogos.gr/feed/",
