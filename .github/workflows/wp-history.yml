@@ -42,7 +42,7 @@ permissions:
 
 jobs:
   history:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     # The script stops itself at 9 minutes; this is the backstop, not the plan.
     timeout-minutes: 12
     steps:

@@ -28,7 +28,7 @@ on:
 
 jobs:
   probe:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Site worker answers (Basic Auth gate means 401 is healthy)
         run: |
