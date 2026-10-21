@@ -42,6 +42,12 @@
     "referer": "https://kalavrytapress.gr"
   },
   {
+    "source": "SKAI",
+    "kind": "rss",
+    "url": "https://www.skai.gr/feed.xml",
+    "referer": "https://www.skai.gr"
+  },
+  {
     "source": "ΛΑΚΩΝΙΚΟΣ ΤΥΠΟΣ",
     "kind": "rss",
     "url": "https://lakonikos.gr/index.php?option=com_k2&view=itemlist&format=feed&type=rss",
