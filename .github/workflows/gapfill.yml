@@ -23,6 +23,28 @@ on:
         description: "Referer (also fixes the site the url must be on)"
         required: true
         type: string
+      kind:
+        description: "rss (feed page) or sitemap (news sitemap)"
+        required: false
+        default: rss
+        type: choice
+        options: [rss, sitemap]
+      from:
+        description: "Keep only entries dated at or after this ISO time (empty = no cut)"
+        required: false
+        default: ""
+        type: string
+      to:
+        description: "Keep only entries dated before this ISO time (empty = no cut)"
+        required: false
+        default: ""
+        type: string
+      dry:
+        description: "1 = report what the page holds and post nothing"
+        required: false
+        default: "1"
+        type: choice
+        options: ["1", "0"]
 
 concurrency:
   group: gapfill
@@ -44,5 +66,8 @@ jobs:
           SOURCE: ${{ inputs.source }}
           URL: ${{ inputs.url }}
           REFERER: ${{ inputs.referer }}
-          KIND: rss
+          KIND: ${{ inputs.kind }}
+          FROM: ${{ inputs.from }}
+          TO: ${{ inputs.to }}
+          DRY: ${{ inputs.dry }}
         run: node gapfill.mjs
