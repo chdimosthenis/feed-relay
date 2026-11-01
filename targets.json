@@ -1,17 +1,5 @@
 [
   {
-    "source": "KavalaNews",
-    "kind": "rss",
-    "url": "https://kavalanews.gr/rss.xml",
-    "referer": "https://kavalanews.gr"
-  },
-  {
-    "source": "PhysicsGG",
-    "kind": "rss",
-    "url": "https://physicsgg.me/feed/",
-    "referer": "https://physicsgg.me"
-  },
-  {
     "source": "Ανεξάρτητος",
     "kind": "rss",
     "url": "https://www.anexartitos.gr/feed",
@@ -42,12 +30,6 @@
     "referer": "https://kalavrytapress.gr"
   },
   {
-    "source": "SKAI",
-    "kind": "rss",
-    "url": "https://www.skai.gr/feed.xml",
-    "referer": "https://www.skai.gr"
-  },
-  {
     "source": "ΛΑΚΩΝΙΚΟΣ ΤΥΠΟΣ",
     "kind": "rss",
     "url": "https://lakonikos.gr/index.php?option=com_k2&view=itemlist&format=feed&type=rss",
@@ -76,6 +58,12 @@
     "kind": "rss",
     "url": "https://typoshalkidikis.gr/feed/",
     "referer": "https://typoshalkidikis.gr"
+  },
+  {
+    "source": "AgrinioNews",
+    "kind": "rss",
+    "url": "https://www.agrinionews.gr/feed/",
+    "referer": "https://www.agrinionews.gr"
   },
   {
     "source": "AgrinioPress",
@@ -381,6 +369,12 @@
     "wideUrl": "https://news.google.com/rss/search?q=site%3Akathimerini.com.cy%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
   },
   {
+    "source": "KavalaNews",
+    "kind": "rss",
+    "url": "https://kavalanews.gr/rss.xml",
+    "referer": "https://kavalanews.gr"
+  },
+  {
     "source": "Kozan.gr",
     "kind": "rss",
     "url": "https://kozan.gr/feed",
@@ -575,6 +569,12 @@
     "referer": "https://www.philenews.com"
   },
   {
+    "source": "PhysicsGG",
+    "kind": "rss",
+    "url": "https://physicsgg.me/feed/",
+    "referer": "https://physicsgg.me"
+  },
+  {
     "source": "Popaganda",
     "kind": "rss",
     "url": "https://popaganda.gr/feed/",
@@ -640,6 +640,12 @@
     "kind": "rss",
     "url": "https://seleo.gr/feed/",
     "referer": "https://www.seleo.gr"
+  },
+  {
+    "source": "SKAI",
+    "kind": "rss",
+    "url": "https://www.skai.gr/feed.xml",
+    "referer": "https://www.skai.gr"
   },
   {
     "source": "Sofokleous10",
