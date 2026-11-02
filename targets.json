@@ -636,12 +636,6 @@
     "wideUrl": "https://news.google.com/rss/search?q=site%3Areporter.com.cy%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
   },
   {
-    "source": "Seleo",
-    "kind": "rss",
-    "url": "https://seleo.gr/feed/",
-    "referer": "https://www.seleo.gr"
-  },
-  {
     "source": "SKAI",
     "kind": "rss",
     "url": "https://www.skai.gr/feed.xml",
