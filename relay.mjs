@@ -20,13 +20,27 @@
  */
 import { readFileSync } from "node:fs";
 import { isHtmlWall } from "./html-wall.mjs";
+import { selectTargets } from "./fast-filter.mjs";
 
 const FETCHER_URL = process.env.FETCHER_URL;
 const FETCHER_SECRET = process.env.FETCHER_SECRET;
 
-const TARGETS = JSON.parse(
+const ALL_TARGETS = JSON.parse(
   readFileSync(new URL("./targets.json", import.meta.url), "utf8"),
 );
+
+// relay-fast.yml sets RELAY_ONLY to a short list of high-rate sources and runs
+// only those every ~14 minutes (see fast-filter.mjs). Such a run tells the
+// fetcher `fast: true` so its deliveries do not count as proof that the FULL
+// relay is alive.
+const { fast: FAST, targets: TARGETS, unknown: UNKNOWN_ONLY } = selectTargets(
+  ALL_TARGETS,
+  process.env.RELAY_ONLY,
+);
+if (FAST && (UNKNOWN_ONLY.length > 0 || TARGETS.length === 0)) {
+  console.error(`RELAY_ONLY names no known target: ${UNKNOWN_ONLY.join(", ") || "(empty)"}`);
+  process.exit(1);
+}
 
 /** How many publishers are in flight at once. Small on purpose: the run has
  * half an hour of headroom, and a burst of seventy simultaneous requests is
@@ -340,7 +354,7 @@ async function relayOne(t) {
     // wrote every aggregator-substituted payload as an ordinary success and
     // stamped a freshness date from Google News. Zero failures, zero alerts,
     // a green board for days over two nearly-silent publishers.
-    body: JSON.stringify({ source: t.source, kind, payload, viaFallback, refusalStatus, refusalMessage }),
+    body: JSON.stringify({ source: t.source, kind, payload, viaFallback, refusalStatus, refusalMessage, fast: FAST }),
     signal: AbortSignal.timeout(30_000),
   });
   const bodyText = (await post.text()).trim();

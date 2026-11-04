@@ -1,0 +1,47 @@
+name: relay-fast
+
+# The FAST lane of the relay: the same relay.mjs, for a SHORT list of high-rate
+# sources only, dispatched by the fetcher about every 14 minutes.
+#
+# WHY. A publisher feed keeps its newest ~10 items. The full relay (relay.yml)
+# runs about every 47 minutes (the fetcher dispatches it when it is 45 minutes
+# late), so a source publishing more than ~13 items an hour loses the rest.
+# Seleo publishes 26-37 an hour and lost ~50% of everything from 31/10 to 4/11.
+# Running the whole roster more often would triple the requests to all 128
+# targets, including the Google News ones that share this runner's IP, so the
+# short list gets its own lane instead.
+#
+# Dispatch-only (the fetcher is the clock: lib/relay-health.ts, runFastRelayDispatch)
+# with its own concurrency group, so it never queues behind the 12-minute full
+# run. It sends `fast: true`, so the fetcher does not mistake a fast delivery
+# for proof that the FULL relay is alive.
+on:
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "Comma-separated source names exactly as in targets.json"
+        required: true
+        type: string
+
+concurrency:
+  group: relay-fast
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  relay-fast:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - name: Relay the listed sources to the fetcher
+        env:
+          FETCHER_URL: ${{ secrets.FETCHER_URL }}
+          FETCHER_SECRET: ${{ secrets.FETCHER_SECRET }}
+          RELAY_ONLY: ${{ inputs.only }}
+          # No Google News link memory in this lane: it carries no GN primary
+          # targets. "0" = no new resolution requests.
+          GN_PRIMARY_RESOLVE_CAP: "0"
+        run: node relay.mjs
