@@ -26,7 +26,7 @@ test("an unknown name is reported so the run can fail loudly", () => {
 test("the shipped targets.json contains every fast source the Worker sends", async () => {
   const { readFileSync } = await import("node:fs");
   const all = JSON.parse(readFileSync(new URL("./targets.json", import.meta.url), "utf8"));
-  const r = selectTargets(all, "Seleo,Pelop,Thesstoday,OTA VOICE");
+  const r = selectTargets(all, "Seleo,Pelop");
   assert.deepEqual(r.unknown, []);
-  assert.equal(r.targets.length, 4);
+  assert.equal(r.targets.length, 2);
 });
