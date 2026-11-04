@@ -539,6 +539,12 @@
     "referer": "https://www.ot.gr"
   },
   {
+    "source": "OTA VOICE",
+    "kind": "rss",
+    "url": "https://otavoice.gr/feed/",
+    "referer": "https://otavoice.gr"
+  },
+  {
     "source": "Paideia News",
     "kind": "rss",
     "url": "https://paideia-news.com/rss.xml",
@@ -709,6 +715,12 @@
     "kind": "rss",
     "url": "https://thessalikigi.gr/feed/",
     "referer": "https://thessalikigi.gr"
+  },
+  {
+    "source": "Thesstoday",
+    "kind": "rss",
+    "url": "https://thesstoday.gr/feed/",
+    "referer": "https://thesstoday.gr"
   },
   {
     "source": "Thestival",
