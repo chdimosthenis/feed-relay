@@ -87,9 +87,9 @@
   {
     "source": "ANT1 News",
     "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Aant1news.gr%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
+    "url": "https://news.google.com/rss/search?q=site%3Aantenna.gr%2Fnews%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
     "referer": "https://www.ant1news.gr",
-    "wideUrl": "https://news.google.com/rss/search?q=site%3Aant1news.gr%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
+    "wideUrl": "https://news.google.com/rss/search?q=site%3Aantenna.gr%2Fnews%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
   },
   {
     "source": "APE-MPE",
