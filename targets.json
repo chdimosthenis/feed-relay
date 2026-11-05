@@ -86,10 +86,9 @@
   },
   {
     "source": "ANT1 News",
-    "kind": "rss",
-    "url": "https://news.google.com/rss/search?q=site%3Aantenna.gr%2Fnews%20when%3A1d&hl=el&gl=GR&ceid=GR:el",
-    "referer": "https://www.ant1news.gr",
-    "wideUrl": "https://news.google.com/rss/search?q=site%3Aantenna.gr%2Fnews%20when%3A7d&hl=el&gl=GR&ceid=GR:el"
+    "kind": "html",
+    "url": "https://www.antenna.gr/news",
+    "referer": "https://www.ant1news.gr"
   },
   {
     "source": "APE-MPE",
